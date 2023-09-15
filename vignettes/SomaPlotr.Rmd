@@ -1,0 +1,295 @@
+---
+title: "Introduction to SomaPlotr"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to SomaPlotr}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "figures/SomaPlotr-",
+  fig.align = "center",
+  dpi = 80
+)
+```
+
+
+This vignette is intended for analysts that are interested in learning how to 
+visualize SomaScan data with the `SomaPlotr` R package. `SomaPlotr` contains numerous 
+plotting functions that are specifically designed to identify and display 
+patterns in SomaScan data. These functions provide a fast and simple mechanism 
+for producing high-quality graphics without extensive programming or data 
+visualization experience. 
+
+This vignette will walk through examples of each plotting function in the package.
+`SomaPlotr` is built around `ggplot2`, so if you are familiar with `ggplot2`, 
+you can extend this package by further modifying or customizing the plots as 
+desired. 
+ 
+
+-------------
+
+
+## Getting started
+
+`SomaPlotr` can be loaded with a simple call to `library()`:
+
+```{r load-package}
+library(SomaPlotr)
+```
+
+In addition to `SomaPlotr`, this vignette will require the following packages for
+example datasets, data wrangling functions, and plotting utilities:
+
+```{r other-packages, message = FALSE}
+library(dplyr)
+library(ggplot2)
+library(SomaDataIO)
+```
+
+The plots in this vignette will be generated using the example ADAT provided in
+`SomaDataIO`. Because it will be referenced repeatedly, we will save it to a 
+variable for convenience and brevity:
+
+```{r ex-data}
+data <- SomaDataIO::example_data
+```
+
+
+## CDF and PDF plots
+
+Cumulative distribution function (CDF) and probability density function (PDF) 
+plots are frequently used visualization methods when analyzing RFU values 
+obtained from SomaScan. These plots can be generated in various forms using the 
+functions provided in `SomaPlotr`. 
+
+### PDF plots
+
+A PDF plot can be created from a single vector of RFU values with `plotPDF()`:
+
+```{r pdf, fig.width = 6, fig.height = 4}
+plotPDF(data$seq.13459.30)
+```
+
+This plot is fairly basic, however. `plotPDFbyGroup()` creates a PDF plot split 
+by a grouping variable of (usually) metadata, e.g. the study response variable. 
+This function differs from `plotPDF()` in that it requires a data frame as input. 
+
+For the plot below, the variable `Sex` will be used to stratify the groups:
+
+```{r pdf-group, fig.width = 6, fig.height = 5}
+# Clean up data by removing missing 'Sex' values
+df_sex <- filter(data, !is.na(Sex))
+
+# Generate PDF plot for analyte of interest
+plotPDFbyGroup(df_sex, "seq.13459.30", group.var = Sex)
+```
+
+Using `plotPDFlist()`, a PDF plot can be generated from a list of numeric 
+vectors, with one smoothed kernel density curve per list item:
+
+```{r pdf-list, fig.width = 6, fig.height = 5}
+list_seq <- list(seq.17138.8 = data$seq.17138.8,
+                 seq.11164.7 = data$seq.11164.7,
+                 seq.11168.3 = data$seq.11168.3)
+
+plotPDFlist(list_seq)
+```
+
+### CDF plots
+
+Similarly, CDF plots can be created with a suite of functions that serve as 
+counterparts to the PDF plotting functions displayed above: `plotCDF()`,
+`plotCDFbyGroup()`, and `plotCDFlist()`. These functions are implemented like the
+PDF plotting functions, and use the same type of inputs:
+
+```{r cdf-plots, eval = FALSE}
+plotCDF(data$seq.11664.32)
+
+plotCDFbyGroup(df_sex, "seq.13459.30", group.var = Sex)
+
+plotCDFlist(list_seq)
+```
+
+
+## Concordance plots  
+  
+Plots illustrating the concordance between two continuous variables (e.g. RFU 
+values from SomaScan analytes) can be generated with `plotConcord()`.
+
+These plots accept two numeric vectors as input; one for `x`, and one for `y`:
+
+```{r concord-vec, fig.width = 6, fig.height = 4}
+x <- data$seq.10800.15
+y <- data$seq.16558.2
+
+plotConcord(x, y)
+```
+
+However, `plotConcord()` will also accept a 2-column data frame, like so:
+
+```{r concord-df, eval = FALSE}
+df_2col <- data.frame(x = x,
+                      y = y)
+
+plotConcord(df_2col)
+```
+
+  
+## Volcano plots
+
+Volcano plots comparing p-value vs. fold change can be generated using 
+`plotVolcano()`.
+
+`plotVolcano()` requires a 2-column data frame of fold change values and 
+p-values as input. These data types are not available in our example ADAT, so 
+they will each be simulated below:
+
+```{r volc-df, fig.width = 6, fig.height = 5}
+df_fc <- withr::with_seed(123, {
+  # Create non-significant, low fold change values
+  nonSig_df <- data.frame(fc = runif(200, -1, 1),  # Random fold changes
+                          p  = runif(200, 0.05, 1)) # Random non-significant p-values
+  # Append significant, high-FC p-values to the end (to ensure the plot is interesting)
+  sig_df <- data.frame(fc = runif(50, -3, 3),
+                       p = runif(50, 0.00, 0.05))
+  rbind(nonSig_df, sig_df)
+})
+```
+
+This data frame can now be used as input into `plotVolcano()`:
+
+```{r volc-plot, fig.width = 6, fig.height = 5}
+# Adding a lower p-value cutoff
+plotVolcano(df_fc, FC = fc, p.value = p, cutoff = 0.1)
+```
+
+The `labels=` and `identify=` arguments can be used to label the points:
+
+```{r volc-html-df, fig.width = 6, fig.height = 5}
+# add some random labels to `df`
+df_fc <- dplyr::mutate(df_fc, pt_label = dplyr::row_number())
+
+plotVolcano(df_fc, FC = fc, p.value = p, cutoff = 0.1,
+            labels = pt_label, identify = TRUE)
+```
+
+With large numbers of samples, labeling points can quickly become messy and 
+difficult to interpret. An interactive HTML-based volcano plot can be created to
+explore the fold change and p-values of each individual point using `plotVolcanoHTML()`. 
+This function can use the same input data as `plotVolcano()`, but produces a 
+plot containing a hovering menu that can be used to interactively 
+investigate each point:
+
+```{r volc-html-plot, fig.width = 6, fig.height = 5, fig.align = 'center'}
+plotVolcanoHTML(df_fc, p.vec = p, FC = fc)
+```
+
+  
+## Boxplots
+
+The function `boxplotGrouped()` can be used to plot a response variable (`y`) 
+split by the specified grouping variable(s); up to 2 may be used.
+
+Below, boxplots are generated for a single grouping variable, `Sex`.
+
+```{r box-grp-1var, fig.width = 6, fig.height = 5}
+boxplotGrouped(df_sex, y = "seq.19222.124", group.var = "Sex")
+```
+
+One additional grouping variable can be added, if desired - for the example 
+below, `PlateId` is used as the second variable to split the dataset by
+sex of the patient providing the sample _and_ by plate the sample was processed 
+on:
+
+```{r box-grp-2var, fig.width = 6, fig.height = 5}
+boxplotGrouped(df_sex, y = "seq.19222.124", group.var = c("Sex", "PlateId"))
+```
+
+Boxplots with "beeswarm"-style points can be created with `boxplotBeeswarm()`. 
+Note that the boxes in the plot below correspond to columns of the data 
+frame, _not_ groups within a categorical metadata variable (as seen in 
+`boxplotGrouped()`).
+
+```{r box-beeswarm, fig.width = 6, fig.height = 5}
+boxplotBeeswarm(
+  data.frame(seq.10056.5 = data$seq.10056.5,
+             seq.10021.1 = data$seq.10021.1)
+)
+```
+
+Lastly, `boxplotSubarray()` can be used to visualize the distribution of all 
+analytes, stratified by subarray, each as its own boxplot.
+In the SomaScan context, a _subarray_ refers to an individual sample or
+row of data.
+
+```{r box-subarray, fig.width = 8, fig.height = 5}
+samples <- withr::with_seed(111, sample(rownames(data), 30L))
+df_subarray <- data[samples, ]
+
+boxplotSubarray(df_subarray, color.by = "SampleType")
+```
+
+In the figure above, each boxplot represents a single sample (the x-axis 
+displays the `SampleId` column values), and boxes are colored by sample type. 
+RFU values for all available analytes are plotted for each sample. 
+
+
+## Histograms
+
+`SomaPlotr` provides one histogram plotting function, `plotDoubleHist()`, that
+allows the distribution of two numeric vectors to be overlaid for easy 
+visual comparison:
+
+```{r double-hist, fig.width = 6, fig.height = 4}
+df_hist <- withr::with_seed(123, data.frame(seq.1234.56 = rnorm(1000, 2, 0.3),
+                                            seq.9876.54 = rnorm(1000, 3, 0.3)))
+plotDoubleHist(df_hist)
+```
+
+
+## Longitudinal data
+
+Change in subjects across time can be tracked using `plotLongitudinal()`. As the 
+name suggests, this function is designed to track RFU measurements in sample 
+groups over time. `plotLongitudinal()` requires input data of a different format
+than previously described plots; instead, a measurement must be present for each 
+sample type and subject at each time point. To satisfy this requirement, 
+additional data will need to be simulated and added to the example dataset from 
+`SomaDataIO`. This will better emulate the type of longitudinal study data that 
+`plotLongitudinal()` is designed to visualize.
+
+```{r long-plot-df}
+df_long <- withr::with_seed(101, {
+  samples <- sample(df_sex$SampleId, 6L) # Select a subset of samples for the fake study
+  data.frame(SampleId = rep(samples, each = 3L),
+             TimePoint = rep(c("0 months", "12 months", "36 months"), 6L), # Add timepoint measurements
+             TissueType = rep(c("Whole blood", "Plasma", "White blood cells"), each = 3L), # Specify tissue collection
+             seq.10021.1 = sample(df_sex$seq.10021.1, 18L)) # Sample RFU measurements for analyte of interest
+})
+
+df_long
+```
+
+The longitudinal plot can now be generated:
+
+```{r long-plot, fig.width = 7, fig.height = 5}
+plotLongitudinal(df_long, y = seq.10021.1, time = TimePoint,
+                 id = SampleId, color = TissueType)
+```
+
+Lines stemming from each point at the `0 months` time point signify the change in
+analyte `seq.10021.1` over time, based on the tissue type of the collected sample.
+
+--------
+
+## Color palettes
+
+For examples of all plotting themes and palettes available in this
+package, see the themes vignette.
+
+

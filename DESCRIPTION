@@ -1,0 +1,60 @@
+Type: Package
+Package: SomaPlotr
+Title: Bioinformatics Graphics and Visualization of 'SomaScan' Data
+Version: 0.0.0.9000
+Authors@R: c(
+    person(given = "Amanda",
+           family = "Hiser",
+           role = c("aut", "cre"),
+           email = "ahiser@somalogic.com"),
+    person(given = "Caleb",
+           family = "Scheidel",
+           role = "ctb",
+           email = "cscheidel@somalogic.com"),
+    person(given = "Leigh",
+           family = "Alexander",
+           role = "ctb",
+           email = "lalexander@somalogic.com"),
+    person(given = "Stu",
+           family = "Field",
+           role = c("aut", "ctb"),
+           email = "stu.g.field@gmail.com",
+           comment = c(ORCID = "0000-0002-1024-5859")),
+    person(given = "SomaLogic Operating Co., Inc.", role = c("cph", "fnd"))
+    )
+Description: A highly specialized suite of standardized
+    plotting routines based on the "Grammar of Graphics" framework of
+    mapping variables to aesthetics used in 'ggplot2'. Graphics types 
+    are biased towards visualizing SomaScan (proteomic) data.
+License: MIT + file LICENSE
+URL: https://somalogic.github.io/SomaPlotr/, https://somalogic.com,
+    https://ggplot2.tidyverse.org/
+BugReports: https://github.com/SomaLogic/SomaPlotr/issues
+Depends:
+    R (>= 4.0.0)
+Imports:
+    SomaDataIO,
+    dplyr,
+    ggplot2,
+    rlang,
+    tidyr
+Suggests:
+    gplots,
+    knitr,
+    MASS,
+    plotly,
+    rmarkdown,
+    seriation,
+    spelling,
+    testthat (>= 3.0.0),
+    withr
+VignetteBuilder:
+    knitr
+Encoding: UTF-8
+Language: en-US
+LazyData: true
+LazyLoad: true
+Config/testthat/edition: 3
+Config/Needs/website: tidyverse/tidytemplate
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3

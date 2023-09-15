@@ -1,0 +1,117 @@
+url: https://somalogic.github.io/SomaPlotr
+
+development:
+  mode: auto
+
+authors:
+  Amanda Hiser:
+    href: https://github.com/amanda-hi
+  Stu Field:
+    href: https://github.com/stufield
+  SomaLogic Operating Co., Inc.:
+    href: http://www.somalogic.com
+  footer:
+    roles: [fnd]
+    text: "was developed by the Bioinformatics Dept.,"
+  sidebar:
+    roles: [cre, fnd]
+    before: "Special :pray: to:"
+    after: ":dna:"
+  before: "[SomaPlotr](https://github.com/SomaLogic/SomaPlotr/) is proudly brought to you by:"
+  after: ":dna:"
+
+footer:
+  structure:
+    left: [package, developed_by]
+    right: built_with
+  components:
+    logo: "<img src='man/figures/logo.png' width='20'> "
+  
+template:
+  bootstrap: 5
+  package: tidytemplate
+  bslib:
+    #bg: "#202123"      # dark theme
+    #fg: "#B8BCC2"      # dark theme
+    primary: "#0054AD"
+    border-radius: 0.5rem
+    btn-border-radius: 0.25rem
+    base_font: {google: "Roboto"}
+
+
+articles:
+  - title: Getting Started
+    navbar: ~
+    contents:
+    - SomaPlotr
+
+reference:
+  - title: SomaLogic `ggplot2`-style
+    desc: >
+      Use themes, palettes, and scales to generate `ggplots` with
+      consistent style and format.
+    contents:
+    - ends_with("_soma")
+
+  - title: Concordance
+    desc: >
+      Plotting concordance of two continuous variables.
+    contents:
+    - plotConcord
+
+  - title: CDFs and PDFs
+    desc: >
+      Plotting cumulative distribution functions (CDF)
+      and probability density functions (PDF).
+    contents:
+    - contains("CDF")
+    - contains("PDF")
+    - addCDFquantiles
+
+  - title: Volcano Plots
+    desc: >
+      Plotting volcanos.
+    contents:
+    - starts_with("plotVolcano")
+
+  - title: Longitudinal data
+    desc: >
+      Plotting time series or longitudinal traces.
+    contents:
+    - plotLongitudinal
+    - plotPolygon
+
+  - title: Boxplot graphics
+    desc: >
+      Various forms of boxplots.
+    contents:
+    - starts_with("boxplot[A-Z]")
+
+  - title: Maps
+    desc: >
+      Plotting maps; "fold-change", "outlier", and "missingness".
+    contents:
+    - starts_with("calc[A-Z]")
+    - plot.Map
+    - getFlaggedIds
+
+  - title: Histograms
+    desc: >
+      Various forms of histograms.
+    contents:
+    - ends_with("Hist")
+
+  - title: Exporting base plots
+    desc: >
+      Useful utilities to save plots to file.
+    contents:
+    - figure
+
+  - title: Package Data
+    desc: >
+      Data objects in `SomaPlotr`.
+    contents:
+    - objects
+
+news:
+  - one_page: true
