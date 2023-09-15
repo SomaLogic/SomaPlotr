@@ -52,6 +52,7 @@ reference:
       consistent style and format.
     contents:
     - ends_with("_soma")
+    - starts_with("style-")
 
   - title: Concordance
     desc: >
