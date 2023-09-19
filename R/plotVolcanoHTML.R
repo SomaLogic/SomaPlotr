@@ -93,9 +93,7 @@ plotVolcanoHTML.default <- function(data, ...) {
 #'   variable name in `data` for the Target Names.
 #' @importFrom SomaDataIO rn2col col2rn
 #' @export
-plotVolcanoHTML.data.frame <- function(data,
-                                       FC = signed.log2.fold.change,
-                                       p.vec = p.value,
+plotVolcanoHTML.data.frame <- function(data, FC = signed.log2.fold.change, p.vec = p.value,
                                        cutoff = 0.05 / nrow(data),
                                        fc.cutoff = 1,
                                        main = NULL, x.lab = NULL,
