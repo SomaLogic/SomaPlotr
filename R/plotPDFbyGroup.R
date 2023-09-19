@@ -71,8 +71,7 @@ plotPDFbyGroup <- function(data, apt, group.var, cols, xlim = NULL,
   p <- data |>
     dplyr::select(!!group.var, apt) |>
     .refactorData() |>     # this is about ghost levels
-    ggplot(aes(x = !!sym(apt),
-               color = !!group.var)) +
+    ggplot(aes(x = !!sym(apt), color = !!group.var)) +
     geom_density(aes(fill  = !!group_var),
                  alpha = ifelse(fill, 0.2, 1),
                  linewidth = ifelse(fill, 0.1, 0.75),

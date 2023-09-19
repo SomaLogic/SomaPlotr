@@ -54,13 +54,10 @@
   for ( meta in nms ) {
     levs <- levels(data[[meta]])
     data[[meta]] <- droplevels(data[[meta]])
-    if ( interactive() ) {
-      levs2 <- levels(data[[meta]])
+    sdiff <- setdiff(levs, levels(data[[meta]]))
+    if ( length(sdiff) > 0L && interactive() ) {
       .info(
-        paste("Dropping levels",
-              value(setdiff(levs, levs2)),
-              "from",
-              value(meta))
+        paste("Dropping levels", value(sdiff), "from", value(meta))
       )
     }
   }
