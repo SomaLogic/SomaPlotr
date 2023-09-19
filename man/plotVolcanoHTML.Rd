@@ -6,53 +6,50 @@
 \alias{plotVolcanoHTML.stat_table}
 \title{Generate HTML-based Volcano Plot}
 \usage{
-plotVolcanoHTML(data, FC, p.vec, cutoff, fc.cutoff, main, x.lab, ...)
+plotVolcanoHTML(data, FC, p.value, cutoff, fc.cutoff, main, x.lab, ...)
 
 \method{plotVolcanoHTML}{data.frame}(
   data,
-  FC = signed.log2.fold.change,
-  p.vec = p.value,
+  FC,
+  p.value,
   cutoff = 0.05/nrow(data),
   fc.cutoff = 1,
   main = NULL,
   x.lab = NULL,
-  target.labels,
+  labels,
   ...
 )
 
 \method{plotVolcanoHTML}{stat_table}(
   data,
-  FC = signed.log2.fold.change,
-  p.vec = p.value,
+  FC,
+  p.value,
   cutoff = 0.05/nrow(data$stat.table),
   fc.cutoff = 1,
   main = NULL,
   x.lab = NULL,
-  apt.data,
+  tbl,
   ...
 )
 }
 \arguments{
-\item{data}{One of two object classes:
-\describe{
-\item{\code{data.frame}:}{Containing log2-transformed fold-changes and
-corresponding p-values. In this case, an optional third column
-containing Target Names can be passed if specified in
-the \verb{target.labels =} argument.}
-\item{\code{stat_table}:}{An object of class \verb{c(stat_table, *_table)}.
-When this argument is provided, the \code{apt.data} argument \emph{must}
-also be passed.}
-}}
+\item{data}{A data frame containing log2-transformed fold-changes and
+corresponding p-values. An optional third column
+containing, e.g. "Target" Names, can be passed if specified by
+the \verb{labels =} parameter.}
 
-\item{FC}{An un-quoted variable name in \code{data} for the fold-changes.}
+\item{FC}{An unquoted string identifying the column in \code{data} containing
+a vector \code{\link[=log2]{log2()}}-transformed fold-changes.}
 
-\item{p.vec}{An un-quoted variable name in \code{data} for the p-values.}
+\item{p.value}{An unquoted string identifying the column in \code{data} containing
+a vector of p-values.}
 
-\item{cutoff}{Horizontal cutoff for coloring points. Defaults to Bonferroni
-corrected level of significance.}
+\item{cutoff}{Horizontal statistical significance cutoff for coloring
+points. Defaults to Bonferroni corrected significance at \code{alpha = 0.05}
+in "p-value" linear space \verb{[0, 1]}.}
 
-\item{fc.cutoff}{Vertical cutoff for coloring coloring points
-(i.e. the fold-change). Defaults to doubling in fold-change.}
+\item{fc.cutoff}{Placement for the cutoff for coloring points along the
+fold-change x-axis. Defaults to doubling in fold-change (\code{1}).}
 
 \item{main}{Character. Main title for the plot.
 See \code{\link[=ggtitle]{ggtitle()}} for \code{ggplot2} style graphics.}
@@ -62,13 +59,11 @@ one is automatically generated (default).}
 
 \item{...}{Additional arguments passed to \code{\link[plotly:plotly]{plotly::plotly()}}.}
 
-\item{target.labels}{Optional for the \code{data.frame} method. An un-quoted
-variable name in \code{data} for the Target Names.}
+\item{labels}{An unquoted string identifying the column in \code{data} containing
+point labels, typically "Target" or "Analyte" names.}
 
-\item{apt.data}{An \code{apt.data} object containing target information
-used to generate point labels in the final plot.
-This object can be obtained from a call to \code{\link[=getAnalyteInfo]{getAnalyteInfo()}}
-on the original data.}
+\item{tbl}{A \code{tibble} object containing analyte target annotation
+information. This is usually the result of a call to \code{\link[SomaDataIO:getAnalyteInfo]{getAnalyteInfo()}}.}
 }
 \description{
 Generate HTML-based Volcano Plot
@@ -77,56 +72,37 @@ Generate HTML-based Volcano Plot
 \itemize{
 \item \code{plotVolcanoHTML(data.frame)}: Plot method for objects of class \code{data.frame}.
 
-\item \code{plotVolcanoHTML(stat_table)}: Plot method for objects of class \code{stat_table}.
+\item \code{plotVolcanoHTML(stat_table)}: Plot method for objects of class \code{stat_table} (SomaLogic internal).
 
 }}
 \examples{
 # Dummy up a fake table with minimal variables
-data <- SomaDataIO::example_data
-apts <- SomaDataIO::getAnalytes(data)
-df <- withr::with_seed(100,
-   data.frame(
-              AptName = sample(apts, 50),
-              t.stat = runif(50, 10, 20),
-              p.value = runif(50),
-              signed.log2.fold.change = rnorm(50),
-              Zscore = rnorm(50),
-              # generate fake target names
-              target = paste0("Target", "_", sample(LETTERS, 50, replace = TRUE),
-                              sample(1:50, 50), "-",
-                              sample(letters, 50, replace = TRUE))
-             )
-)
+adat <- SomaDataIO::example_data
+seqs <- SomaDataIO::getAnalytes(adat)
+target_map <- SomaDataIO::getTargetNames(SomaDataIO::getAnalyteInfo(adat))
+df <- withr::with_seed(101, {
+  fc1 <- sort(runif(500, -2.5, 0))   # Z-scores as dummy fold-changes
+  fc2 <- sort(runif(500, 0, 2.5))    # Z-scores as dummy fold-changes
+  p1  <- pnorm(fc1)                  # p-values for neg. scores
+  p2  <- pnorm(fc2, lower.tail = FALSE) # p-values for pos. scores
+  p   <- jitter(c(p1, p2), amount = 0.1) # add noise
+  p[p < 0] <- runif(sum(p < 0), 1e-05, 1e-02) # floor p > 0 after jitter
+  seq_vec <- sample(seqs, length(p))   # random seqIds
+  data.frame(
+    AptName = seq_vec,
+    t_stat  = runif(50, 10, 20),
+    log2_fc = c(fc1, fc2),
+    p_value = p,
+    target  = unlist(target_map)[seq_vec]  # map random target names
+  )
+})
 
 # S3 `data.frame` method
-# No Target labels -> `NA`
-plotVolcanoHTML(df, cutoff = 0.1, fc.cutoff = 0.5)
+# No TargetNames -> `NA`
+plotVolcanoHTML(df, log2_fc, p_value, cutoff = 0.1, fc.cutoff = 0.5)
 
-# Add Target labels -> `targets`
-plotVolcanoHTML(df, cutoff = 0.1, fc.cutoff = 0.5, target.labels = target)
-
-# S3 `stat_table` method; calc.* family
-# Dummy up a fake `stat_table` object
-stbl <- list()
-stbl$stat.table <- SomaDataIO::col2rn(df, "AptName")
-stbl$test <- "Fake t-test"
-stbl$data.dim <- dim(df)
-stbl$y.response <- "LHS"
-stbl$counts <- c(GroupA = 25, GroupB = 25)
-stbl$log <- TRUE
-stbl$data.frame <- "df"
-class(stbl) <- c("stat_table", class(stbl))
-
-# Pick up apt.data
-ad <- SomaDataIO::getAnalyteInfo(data)
-
-# Target names picked up from `apt.data`
-plotVolcanoHTML(stbl, apt.data = ad, cutoff = 0.1, fc.cutoff = 0.5)
-
-# Change FC arg on fly -> `Zscore`
-# Pass args via '...' -> `x.lab`
-plotVolcanoHTML(stbl, apt.data = ad, cutoff = 0.1, fc.cutoff = 0.5,
-                FC = Zscore, x.lab = "Slope")
+# Add TargetNames via `labels=`
+plotVolcanoHTML(df, log2_fc, p_value, cutoff = 0.1, fc.cutoff = 0.5, labels = target)
 }
 \seealso{
 \code{\link[plotly:plotly]{plotly::plotly()}}

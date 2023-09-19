@@ -9,12 +9,12 @@
 #'   A third column containing point labels _must_ be supplied,
 #'   if `identify = TRUE`.
 #' @param identify Logical. Should significant points be identified?
-#' @param FC Unquoted string identifying the column in `data` containing
-#'   a fold-change vector.
-#' @param p.value Unquoted string identifying the column in `data` containing
-#'   a p-value vector.
-#' @param labels Unquoted string identifying the column in `data` containing
-#'   point labels, typically `"Aptamer"` names.
+#' @param FC An unquoted string identifying the column in `data` containing
+#'   a vector [log2()]-transformed fold-changes.
+#' @param p.value An unquoted string identifying the column in `data` containing
+#'   a vector of p-values.
+#' @param labels An unquoted string identifying the column in `data` containing
+#'   point labels, typically "Target" or "Analyte" names.
 #' @param cutoff Horizontal statistical significance cutoff for coloring
 #'   points. Defaults to Bonferroni corrected significance at `alpha = 0.05`
 #'   in "p-value" linear space \verb{[0, 1]}.

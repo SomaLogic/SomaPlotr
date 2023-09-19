@@ -222,7 +222,7 @@ plotVolcanoHTML(
   fc,
   p,
   cutoff        = 0.05,
-  target.labels = target_names
+  labels = target_names
 )
 ```
 
