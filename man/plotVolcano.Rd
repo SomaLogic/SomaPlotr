@@ -25,14 +25,14 @@ containing 1) log2-transformed fold-changes, 2) linear-space p-values.
 A third column containing point labels \emph{must} be supplied,
 if \code{identify = TRUE}.}
 
-\item{FC}{Unquoted string identifying the column in \code{data} containing
-a fold-change vector.}
+\item{FC}{An unquoted string identifying the column in \code{data} containing
+a vector \code{\link[=log2]{log2()}}-transformed fold-changes.}
 
-\item{p.value}{Unquoted string identifying the column in \code{data} containing
-a p-value vector.}
+\item{p.value}{An unquoted string identifying the column in \code{data} containing
+a vector of p-values.}
 
-\item{labels}{Unquoted string identifying the column in \code{data} containing
-point labels, typically \code{"Aptamer"} names.}
+\item{labels}{An unquoted string identifying the column in \code{data} containing
+point labels, typically "Target" or "Analyte" names.}
 
 \item{identify}{Logical. Should significant points be identified?}
 

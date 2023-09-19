@@ -7,10 +7,10 @@ ad   <- getAnalyteInfo(data)
 withr::with_seed(100,
   df <- data.frame(
     AptName = sample(apts, 50),
-    t.stat = runif(50, 10, 20),
+    t_stat = runif(50, 10, 20),
     beta   = rnorm(50, 0, 3),
-    p.value = runif(50),
-    signed.log2.fold.change = rnorm(50),
+    p_value = runif(50),
+    log2_fc = rnorm(50),
     Zscore = rnorm(50),
     # generate fake target names
     target = paste0("Target", "_", sample(LETTERS, 50, replace = TRUE),
@@ -40,7 +40,7 @@ stbl_surv$time   <- "time"
 
 # Testing ------
 test_that("`plotVolcanoHTML.data.frame()` S3 method works without target labels", {
-  out <- plotVolcanoHTML(df, cutoff = 0.1, fc.cutoff = 0.5)
+  out <- plotVolcanoHTML(df, FC = log2_fc, p.value = p_value, cutoff = 0.1, fc.cutoff = 0.5)
 
   plot_obj_dat <- plotly::plotly_build(out)$x$data
   plot_attrs   <- out$x$layoutAttrs
@@ -59,8 +59,8 @@ test_that("`plotVolcanoHTML.data.frame()` S3 method works without target labels"
 })
 
 test_that("`plotVolcanoHTML.data.frame()` S3 method works with target labels", {
-  out <- plotVolcanoHTML(df, cutoff = 0.1, fc.cutoff = 0.1,
-                         target.labels = target)
+  out <- plotVolcanoHTML(df, FC = log2_fc, p.value = p_value, cutoff = 0.1,
+                         fc.cutoff = 0.1, labels = target)
 
   plot_obj_dat <- plotly::plotly_build(out)$x$data
   plot_attrs   <- out$x$layoutAttrs
@@ -79,7 +79,8 @@ test_that("`plotVolcanoHTML.data.frame()` S3 method works with target labels", {
 })
 
 test_that("`plotVolcanoHTML.stat_table()` S3 method works with basic args", {
-  out <- plotVolcanoHTML(stbl_t, apt.data = ad, cutoff = 0.1, fc.cutoff = 0.5)
+  out <- plotVolcanoHTML(stbl_t, FC = log2_fc, p.value = p_value,
+                         tbl = ad, cutoff = 0.1, fc.cutoff = 0.5)
 
   plot_obj_dat <- plotly::plotly_build(out)$x$data
   plot_attrs   <- out$x$layoutAttrs
@@ -101,8 +102,8 @@ test_that("`plotVolcanoHTML.stat_table()` S3 method works with basic args", {
 })
 
 test_that("`plotVolcanoHTML.stat_table()` S3 method works with extra args", {
-  out <- plotVolcanoHTML(stbl_t, apt.data = ad, cutoff = 0.1, fc.cutoff = 0.5,
-                         FC = Zscore, x.lab = "Slope")
+  out <- plotVolcanoHTML(stbl_t, FC = Zscore, p.value = p_value, tbl = ad,
+                         cutoff = 0.1, fc.cutoff = 0.5, x.lab = "Slope")
 
   plot_obj_dat <- plotly::plotly_build(out)$x$data
   plot_attrs   <- out$x$layoutAttrs
@@ -123,8 +124,8 @@ test_that("`plotVolcanoHTML.stat_table()` S3 method works with extra args", {
 })
 
 test_that("`plotVolcanoHTML.stat_table()` S3 method works with surv stat table", {
-  out <- plotVolcanoHTML(stbl_surv, FC = beta, apt.data = ad, cutoff = 0.1,
-                         fc.cutoff = 2, x.lab = "beta")
+  out <- plotVolcanoHTML(stbl_surv, FC = beta, p.value = p_value, tbl = ad,
+                         cutoff = 0.1, fc.cutoff = 2, x.lab = "beta")
 
   plot_obj_dat <- plotly::plotly_build(out)$x$data
   plot_attrs   <- out$x$layoutAttrs
