@@ -9,13 +9,13 @@
 #'   [read_adat()].
 #' @param color.by A column name to color the subarrays by. Typically a meta
 #'   data field in the adat such as `SlideId`.
-#' @param labels Character. A column name of `adat` used to label each box.
+#' @param labels Character. A column name of `.data` used to label each box.
 #' @param do.log Logical. Should the data should be log10-transformed?
 #' @param y.lim Numeric. Length 2. The upper- and lower-quantiles of the
 #'   _total_ data used to determine the y-axis limits of the plot.
 #'   If `NULL`, all points are shown.
-#' @param apts An optional subset of analytes (as `AptNames`) to add on top
-#'   of subarray boxplot.
+#' @param apts Optional. A subset of analytes (as `AptNames`) to add as points
+#'   on top of the subarray boxplot.
 #' @author Stu Field
 #' @seealso [geom_boxplot()]
 #' @examples
