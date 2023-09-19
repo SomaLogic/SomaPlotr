@@ -20,7 +20,7 @@ boxplotSubarray(
 \item{color.by}{A column name to color the subarrays by. Typically a meta
 data field in the adat such as \code{SlideId}.}
 
-\item{labels}{Character. A column name of \code{adat} used to label each box.}
+\item{labels}{Character. A column name of \code{.data} used to label each box.}
 
 \item{y.lim}{Numeric. Length 2. The upper- and lower-quantiles of the
 \emph{total} data used to determine the y-axis limits of the plot.
@@ -28,8 +28,8 @@ If \code{NULL}, all points are shown.}
 
 \item{do.log}{Logical. Should the data should be log10-transformed?}
 
-\item{apts}{An optional subset of analytes (as \code{AptNames}) to add on top
-of subarray boxplot.}
+\item{apts}{Optional. A subset of analytes (as \code{AptNames}) to add as points
+on top of the subarray boxplot.}
 }
 \description{
 Plots the distribution of of all analytes stratified
