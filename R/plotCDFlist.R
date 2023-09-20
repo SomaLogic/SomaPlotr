@@ -22,12 +22,13 @@
 #' @examples
 #' # `plotCDFlist()`
 #' x <- withr::with_seed(101,
-#'   list(
-#'     Group1 = rnorm(100),
-#'     Group2 = rnorm(100, sd = 0.5),
-#'     Group3 = rnorm(50, mean = 3, sd = 2)
-#'   )
+#'   mapply(mean = 3:5, n = c(10, 100, 1000), FUN = rnorm) |>
+#'     setNames(paste0("Group", 1:3))
 #' )
+#' lengths(x)
+#'
+#' sapply(x, mean)
+#'
 #' # warning: RFU values should all be positive!
 #' plotCDFlist(x)
 #' plotCDFlist(x, label = "SplitBy")
@@ -35,7 +36,7 @@
 #' medians <- vapply(x, median, 0.0)
 #' plotCDFlist(x, ablines = medians, main = "Variable `x` CDF")
 #' @importFrom rlang sym !!
-#' @importFrom tidyr gather
+#' @importFrom tidyr gather drop_na
 #' @export
 plotCDFlist <- function(.data, label = "Group", main = "CDF by Group", ...) {
 
@@ -47,7 +48,9 @@ plotCDFlist <- function(.data, label = "Group", main = "CDF by Group", ...) {
   }
 
   label <- sym(label)
-  data.frame(.data, check.names = FALSE) |>
+  lapply(.data, "length<-", max(lengths(.data))) |>  # fix for jagged elements
+    data.frame(check.names = FALSE) |>
     gather(key = !!label) |>
+    drop_na(value) |>
     plotCDFbyGroup(apt = "value", group.var = !!label, main = main, ...)
 }
