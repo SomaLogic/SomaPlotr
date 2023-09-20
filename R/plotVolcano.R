@@ -3,6 +3,7 @@
 #' Create a volcano plot given a vector of log2-transformed
 #' fold-changes (`FC`) and linear space p-values.
 #'
+#' @family volcano
 #' @inheritParams boxplotBeeswarm
 #' @param data A `data.frame` object containing at _least_ two columns
 #'   containing 1) log2-transformed fold-changes, 2) linear-space p-values.

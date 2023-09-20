@@ -106,7 +106,11 @@ plotVolcanoHTML(df, log2_fc, p_value, cutoff = 0.1, fc.cutoff = 0.5, labels = ta
 }
 \seealso{
 \code{\link[plotly:plotly]{plotly::plotly()}}
+
+Other volcano: 
+\code{\link{plotVolcano}()}
 }
 \author{
 Leigh Alexander, Stu Field
 }
+\concept{volcano}
