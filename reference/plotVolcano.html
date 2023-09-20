@@ -83,18 +83,18 @@ if <code>identify = TRUE</code>.</p></dd>
 
 
 <dt>FC</dt>
-<dd><p>Unquoted string identifying the column in <code>data</code> containing
-a fold-change vector.</p></dd>
+<dd><p>An unquoted string identifying the column in <code>data</code> containing
+a vector <code><a href="https://rdrr.io/r/base/Log.html" class="external-link">log2()</a></code>-transformed fold-changes.</p></dd>
 
 
 <dt>p.value</dt>
-<dd><p>Unquoted string identifying the column in <code>data</code> containing
-a p-value vector.</p></dd>
+<dd><p>An unquoted string identifying the column in <code>data</code> containing
+a vector of p-values.</p></dd>
 
 
 <dt>labels</dt>
-<dd><p>Unquoted string identifying the column in <code>data</code> containing
-point labels, typically <code>"Aptamer"</code> names.</p></dd>
+<dd><p>An unquoted string identifying the column in <code>data</code> containing
+point labels, typically "Target" or "Analyte" names.</p></dd>
 
 
 <dt>identify</dt>
@@ -136,7 +136,9 @@ one is automatically generated (default).</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code>geom_point()</code>.</p></div>
+    <div class="dont-index"><p><code>geom_point()</code>.</p>
+<p>Other volcano: 
+<code><a href="plotVolcanoHTML.html">plotVolcanoHTML</a>()</code></p></div>
     </div>
     <div class="section level2">
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>
