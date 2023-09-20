@@ -1,5 +1,6 @@
 #' Generate HTML-based Volcano Plot
 #'
+#' @family volcano
 #' @inheritParams boxplotBeeswarm
 #' @inheritParams plotVolcano
 #' @param data A data frame containing log2-transformed fold-changes and

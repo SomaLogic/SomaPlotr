@@ -78,7 +78,11 @@ plotVolcano(df, fc, p, labels = pt_label, identify = TRUE, cutoff = 0.01)
 }
 \seealso{
 \code{\link[=geom_point]{geom_point()}}.
+
+Other volcano: 
+\code{\link{plotVolcanoHTML}()}
 }
 \author{
 Stu Field
 }
+\concept{volcano}
