@@ -109,9 +109,9 @@ list_seq <- list(
 )
 
 plotPDFlist(
-  list_seq,
-  fill = TRUE,
-  main = "20% Scale Factors vs 1.0 Null Distribution",
+  .data = list_seq,
+  fill  = TRUE,
+  main  = "20% Scale Factors vs 1.0 Null Distribution",
   x.lab = "Scale Factor"
 )
 ```
@@ -160,22 +160,21 @@ plotConcord(df_2col)
 
 ## Volcano Plots
 
-Volcano plots comparing p-value vs. fold change can be generated using 
+Volcano plots comparing p-value vs. fold-change can be generated using 
 `plotVolcano()`.
-
-`plotVolcano()` requires a 2-column data frame of fold change values and 
+`plotVolcano()` requires a 2-column data frame of fold-change values and 
 p-values as input. These data types are not available in our example ADAT, so 
 they will each be simulated below:
 
 ```{r volc-df}
-withr::with_seed(101, {
+fc_df <- withr::with_seed(101, {
   fc1 <- sort(runif(500, -2.5, 0))   # Z-scores as fc
   fc2 <- sort(runif(500, 0, 2.5))    # Z-scores as fc
   p1  <- pnorm(fc1)
   p2  <- pnorm(fc2, lower.tail = FALSE)
   p   <- jitter(c(p1, p2), amount = 0.1)
   p[p < 0] <- runif(sum(p < 0), 1e-05, 1e-02)   # floor p < 0 after jitter
-  fc_df <- data.frame(fc = c(fc1, fc2), p = p)
+  data.frame(fc = c(fc1, fc2), p = p)
 })
 ```
 
@@ -194,6 +193,7 @@ target_map
 
 # add random SeqId rownames to `fc_df`
 fc_df <- set_rn(fc_df, withr::with_seed(1, sample(getAnalytes(data), nrow(fc_df))))
+
 # map rownames to target labels
 fc_df$target_names <- unlist(target_map, use.names = TRUE)[rownames(fc_df)]
 
@@ -207,21 +207,21 @@ plotVolcano(
 )
 ```
 
-With large significance levels (i.e. higher cutoff), labels can quickly
+With large significance (i.e. higher cutoff), labels can quickly
 become cluttered, overlapping, and difficult to distinguish.
-An interactive HTML-based volcano plot can be created to explore the fold
-change and p-values of each individual point using `plotVolcanoHTML()`.
-This function can use the same input data as `plotVolcano()`, but uses 
-[plotly](https://plotly.com/r/)
+To aid with this an interactive HTML-based volcano plot can be
+created to explore individuals point via `plotVolcanoHTML()`.
+This function uses the same input parameters as `plotVolcano()`,
+but uses [plotly](https://plotly.com/r/)
 under the hood to generate a hovering menu that can be used to
 interactively investigate each point:
 
-```{r volc-html-plot, fig.width = 6, fig.height = 6, fig.align = "center"}
+```{r volc-html-plot, fig.width = 10, fig.height = 5, fig.align = "center"}
 plotVolcanoHTML(
   fc_df,
   fc,
   p,
-  cutoff        = 0.05,
+  cutoff = 0.1,
   labels = target_names
 )
 ```
