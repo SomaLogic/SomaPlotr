@@ -27,6 +27,7 @@ utils::globalVariables(
     "signed.log2.fold.change",
     ".id",
     "SampleType",
-    "RFU_values"
+    "RFU_values",
+    "value"
   )
 )
