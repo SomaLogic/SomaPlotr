@@ -1,0 +1,181 @@
+---
+title: "SomaPlotr Themes"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{SomaPlotr Themes}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "figures/Themes-",
+  fig.align = "center",
+  dpi = 80
+)
+```
+
+
+This vignette provides an overview of the color palettes, 
+[ggplot2](https://ggplot2.tidyverse.org/) themes, and color scales available in
+`SomaPlotr`.
+
+The following packages will be required to run this vignette:
+
+```{r}
+library(SomaPlotr)
+library(ggplot2)
+library(withr)
+```
+
+
+# Hexadecimal Color Lists
+___
+
+In R, exact colors can be specified using strings of 6 hexadecimal values. 
+A hexadecimal (hex) color is specified with the format #RRGGBB, 
+where the red (RR), green (GG), and blue (BB) components of the color are hex 
+values between 00 and FF. The hexadecimal color lists in `SomaPlotr` reflect 
+the colors used in official SomaLogic branding and marketing materials. 
+
+`soma_colors` is a list of hexadecimal values corresponding colors from the  
+SomaLogic branding color scheme prior to 2020 (N = `r length(soma_colors)`), in darker 
+and more subdued shades than what is used today (in 2023):
+
+```{r}
+soma_colors
+scales::show_col(unlist(soma_colors))
+```
+
+`soma_colors2` contains the exact colors used in _current_ official SomaLogic 
+branding materials (N = `r length(soma_colors2)`). This list contains fewer values 
+than `soma_colors`:
+
+```{r}
+soma_colors2
+scales::show_col(unlist(soma_colors2))
+```
+
+These color lists can be directly supplied to various visualization utilities.
+
+```{r}
+ggplot(iris, aes(x = Species, y = Sepal.Width)) +
+  geom_boxplot(fill = soma_colors2$teal,
+               outlier.color = soma_colors2$yellow) +
+  geom_jitter(color = soma_colors2$pink)
+```
+
+The entire palette, as a vector, can also be supplied as an argument when a
+vector of colors is required:
+
+```{r}
+hist(iris$Sepal.Length, col = unlist(soma_colors))
+```
+
+`SomaPlotr` also provides two additional color lists. The first, `soma_colors_greys`, 
+contains only greyscale values:
+
+```{r}
+soma_colors_greys
+scales::show_col(unlist(soma_colors_greys))
+```
+
+The second, `soma_colors_risk`, contains colors frequently used for risk designation:
+
+```{r}
+soma_colors_risk
+scales::show_col(unlist(soma_colors_risk))
+```
+
+
+# Color Palettes Generator
+___
+
+The color lists above contain a set number of colors, which may not contain
+enough values for plots containing large numbers of groups. The `palette_soma()`
+function allows the user to generate a hex color vector of N length by recycling
+values from the `soma_colors2()` list until the desired length vector is achieved:
+
+```{r}
+palette_soma(10)
+
+scales::show_col(palette_soma(10))
+
+scales::show_col(palette_soma(5))
+```
+
+`palette_soma()` can be used to assign specific colors to groups, while staying
+within the SomaLogic color scheme, when the number of groups exceeds the number
+of colors available in the `soma_colors` lists. For example, in the dataset below,
+there are 15 groups, but `soma_colors2` only contains 8 colors:
+
+```{r}
+groups <- paste("Grp", seq(1, 15, 1L))
+withr::with_seed(123, {
+  n <- 200
+  df <- data.frame(seq.1234.56 = rnorm(n, 2, 0.5),
+                   Group = sample(groups, n, replace = TRUE)
+                   )
+})
+```
+
+We can use `palette_soma()` to recycle the `soma_colors2` values to acheive a vector
+of length 15, then use that to assign colors to a graphic containing boxplots:
+
+```{r}
+pal <- palette_soma(length(groups))
+
+ggplot(df, aes(x = Group, y = seq.1234.56, fill = Group)) +
+  geom_boxplot() +
+  scale_fill_manual(values = pal) +
+  theme(legend.position = "none")
+```
+
+
+# ggplot2 Themes & Scales
+___
+
+## Theme
+
+`ggplot2` themes provide a method for easy customization of all non-data components of plots (i.e. titles, labels, fonts, background, gridlines, legends, and more). `SomaPlotr` uses themes to give plots a consistent look. The `theme_soma()` theme applies a set of customizations to each plot for convenience and for consistency.
+
+```{r}
+# Default ggplot2 theme
+gg$point
+
+# theme_soma() applied
+gg$point + theme_soma()
+```
+
+
+## Scales
+
+`SomaPlotr` contains `ggplot2`-compatible scales, both continuous and discrete, that can be
+applied to previously generated plots.
+
+```{r}
+gg$point + scale_color_soma()
+```
+
+```{r}
+gg$bar + scale_fill_soma()
+```
+
+```{r}
+gg$box + scale_fill_soma_risk()
+```
+
+Other scales include:
+
+  - `scale_continuous_color_soma()`
+  - `scale_continuous_color_soma_risk()`
+  - `scale_continuous_fill_soma()`
+  - `scale_continuous_fill_soma_risk()`
+  - `scale_fill_soma_gender()`
+
+And their `fill` equivalents.
+
+
+
