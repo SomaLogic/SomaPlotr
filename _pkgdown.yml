@@ -26,7 +26,7 @@ footer:
     right: built_with
   components:
     logo: "<img src='man/figures/logo.png' width='20'> "
-  
+
 template:
   bootstrap: 5
   package: tidytemplate
@@ -44,6 +44,11 @@ articles:
     navbar: ~
     contents:
     - SomaPlotr
+
+  - title: Applying SomaLogic Themes and Palettes
+    navbar: ~
+    contents:
+    - themes-and-palettes
 
 reference:
   - title: SomaLogic `ggplot2`-style

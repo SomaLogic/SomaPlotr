@@ -40,10 +40,12 @@ Imports:
     tidyr
 Suggests:
     gplots,
+    gridExtra,
     knitr,
     MASS,
     plotly,
     rmarkdown,
+    scales,
     seriation,
     spelling,
     testthat (>= 3.0.0),
