@@ -1,6 +1,10 @@
 ---
 title: "Introduction to SomaPlotr"
-output: rmarkdown::html_vignette
+author: "Amanda Hiser, SomaLogic Operating Co., Inc."
+output:
+  rmarkdown::html_vignette:
+    fig_caption: yes
+    toc: yes
 vignette: >
   %\VignetteIndexEntry{Introduction to SomaPlotr}
   %\VignetteEncoding{UTF-8}
