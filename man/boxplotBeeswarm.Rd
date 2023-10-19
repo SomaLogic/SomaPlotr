@@ -6,7 +6,7 @@
 \usage{
 boxplotBeeswarm(
   .data,
-  notch = TRUE,
+  notch = FALSE,
   label = "Group",
   main = NULL,
   y.lab = "value",
@@ -23,7 +23,10 @@ boxplotBeeswarm(
 a numeric vector containing values for each box, or a \emph{named}
 \code{list} object which can be converted to one.}
 
-\item{notch}{Should notches be drawn in the boxplots.}
+\item{notch}{Logical. Should notches be drawn in the boxplots? If FALSE
+(default), a standard box plot will be drawn. If TRUE, notches will
+be added to the median line of each box plot. See \code{notch} argument of
+\code{\link[=geom_boxplot]{geom_boxplot()}}.}
 
 \item{label}{Character. A label for the grouping variable, i.e. what
 the columns of the data frame represent.}
@@ -45,7 +48,7 @@ For \code{\link[=plotDoubleHist]{plotDoubleHist()}}, must be \code{length = 2}.}
 \item{pt.color}{Character. A \emph{fill} color for the points. See \code{\link[=geom_point]{geom_point()}}.}
 
 \item{pt.shape}{Numeric or Character. Recognized \code{pch} shapes for the
-points. Recall that \code{pch = 21 - 25} only are "fill-able". Other point
+points. Recall that \emph{only} \code{pch = 21 - 25} are "fill-able". Other point
 characters will \emph{not} take on the color from \code{pt.color}.
 See \code{\link[=geom_point]{geom_point()}}.}
 
@@ -58,20 +61,21 @@ Boxplot with "beeswarm" style points.
 Plot a series of boxplots with "beeswarm"-style points added to the boxes.
 }
 \examples{
-df <- lapply(setNames(LETTERS[1:5], letters[1:5]), \(x) rnorm(10, 10, 3)) |>
+df <- lapply(setNames(LETTERS[1:5], letters[1:5]), \(x) rnorm(30, 10, 3)) |>
   data.frame() |>
   dplyr::select(d, dplyr::everything())   # move `d` to the front
-df
+head(df)
 
 df |> boxplotBeeswarm(main = "Title")
-df |> boxplotBeeswarm(pt.color = "cyan")
+df |> boxplotBeeswarm(pt.color = "cyan", notch = TRUE) # add notch
 df |> boxplotBeeswarm(cols = "grey")     # all boxes 1 color
-df |> boxplotBeeswarm(label = "Disease Level", y.lab = "Y", notch = FALSE)
+df |> boxplotBeeswarm(label = "Disease Level", y.lab = "Y")
 
-# Non-fill-able `pt.shape`
+# Some point shapes can't be filled with color.
+# Example of a non-fillable `pt.shape` value
 df |> boxplotBeeswarm(pt.shape = 13)
 
-# shapes 21 -> 25 are `fill-capable`
+# Shapes 21 - 25 are fillable
 df |> boxplotBeeswarm(cols = rep("blue", ncol(df)), pt.size = 5,
                        pt.shape = 23, pt.color = "red")
 }

@@ -6,7 +6,10 @@
 #' @param .data Either a `data.frame`/`tbl_df` object where each column is
 #'   a numeric vector containing values for each box, or a _named_
 #'   `list` object which can be converted to one.
-#' @param notch Should notches be drawn in the boxplots.
+#' @param notch Logical. Should notches be drawn in the boxplots? If FALSE
+#'   (default), a standard box plot will be drawn. If TRUE, notches will
+#'   be added to the median line of each box plot. See `notch` argument of
+#'   [geom_boxplot()].
 #' @param label Character. A label for the grouping variable, i.e. what
 #'   the columns of the data frame represent.
 #' @param main Character. Main title for the plot.
@@ -20,7 +23,7 @@
 #' @param pt.size Numeric. A size for the points. See [geom_point()].
 #' @param pt.color Character. A _fill_ color for the points. See [geom_point()].
 #' @param pt.shape Numeric or Character. Recognized `pch` shapes for the
-#'   points. Recall that `pch = 21 - 25` only are "fill-able". Other point
+#'   points. Recall that *only* `pch = 21 - 25` are "fill-able". Other point
 #'   characters will _not_ take on the color from `pt.color`.
 #'   See [geom_point()].
 #' @param ... Additional arguments passed to [geom_boxplot()].
@@ -28,20 +31,21 @@
 #' @author Stu Field
 #' @seealso [geom_boxplot()], [geom_jitter()]
 #' @examples
-#' df <- lapply(setNames(LETTERS[1:5], letters[1:5]), \(x) rnorm(10, 10, 3)) |>
+#' df <- lapply(setNames(LETTERS[1:5], letters[1:5]), \(x) rnorm(30, 10, 3)) |>
 #'   data.frame() |>
 #'   dplyr::select(d, dplyr::everything())   # move `d` to the front
-#' df
+#' head(df)
 #'
 #' df |> boxplotBeeswarm(main = "Title")
-#' df |> boxplotBeeswarm(pt.color = "cyan")
+#' df |> boxplotBeeswarm(pt.color = "cyan", notch = TRUE) # add notch
 #' df |> boxplotBeeswarm(cols = "grey")     # all boxes 1 color
-#' df |> boxplotBeeswarm(label = "Disease Level", y.lab = "Y", notch = FALSE)
+#' df |> boxplotBeeswarm(label = "Disease Level", y.lab = "Y")
 #'
-#' # Non-fill-able `pt.shape`
+#' # Some point shapes can't be filled with color.
+#' # Example of a non-fillable `pt.shape` value
 #' df |> boxplotBeeswarm(pt.shape = 13)
 #'
-#' # shapes 21 -> 25 are `fill-capable`
+#' # Shapes 21 - 25 are fillable
 #' df |> boxplotBeeswarm(cols = rep("blue", ncol(df)), pt.size = 5,
 #'                        pt.shape = 23, pt.color = "red")
 #' @importFrom rlang sym !! :=
@@ -51,7 +55,7 @@
 #' @importFrom tidyr gather
 #' @export
 boxplotBeeswarm <- function(.data,
-                            notch = TRUE,
+                            notch = FALSE,
                             label = "Group",
                             main = NULL,
                             y.lab = "value",
