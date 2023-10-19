@@ -28,7 +28,10 @@ a numeric vector containing values for each box, or a \emph{named}
 names of the grouping variable(s). Variables must be either factor
 or character class vectors.}
 
-\item{notch}{Should notches be drawn in the boxplots.}
+\item{notch}{Logical. Should notches be drawn in the boxplots? If FALSE
+(default), a standard box plot will be drawn. If TRUE, notches will
+be added to the median line of each box plot. See \code{notch} argument of
+\code{\link[=geom_boxplot]{geom_boxplot()}}.}
 
 \item{y.lab}{Character. Optional string for the y-axis. Otherwise
 one is automatically generated (default).}
@@ -42,7 +45,7 @@ one is automatically generated (default).}
 See \code{\link[=ggtitle]{ggtitle()}} for \code{ggplot2} style graphics.}
 
 \item{pt.shape}{Numeric or Character. Recognized \code{pch} shapes for the
-points. Recall that \code{pch = 21 - 25} only are "fill-able". Other point
+points. Recall that \emph{only} \code{pch = 21 - 25} are "fill-able". Other point
 characters will \emph{not} take on the color from \code{pt.color}.
 See \code{\link[=geom_point]{geom_point()}}.}
 
