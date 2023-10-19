@@ -2,7 +2,7 @@
 % Please edit documentation in R/boxplotSubarray.R
 \name{boxplotSubarray}
 \alias{boxplotSubarray}
-\title{Plot Boxplots by Subarray (sample)}
+\title{Plot Boxplots by Subarray (Sample)}
 \usage{
 boxplotSubarray(
   .data,
@@ -17,24 +17,26 @@ boxplotSubarray(
 \item{.data}{A \code{soma_data} or data frame object created via a call to
 \code{\link[=read_adat]{read_adat()}}.}
 
-\item{color.by}{A column name to color the subarrays by. Typically a meta
-data field in the adat such as \code{SlideId}.}
+\item{color.by}{Character. A column name to color the subarrays (samples)
+by. This is typically a sample processing or clinical data field in the
+ADAT such as \code{SlideId}.}
 
-\item{labels}{Character. A column name of \code{.data} used to label each box.}
+\item{labels}{Character. The column name of \code{.data} used to label each box.}
 
 \item{y.lim}{Numeric. Length 2. The upper- and lower-quantiles of the
 \emph{total} data used to determine the y-axis limits of the plot.
 If \code{NULL}, all points are shown.}
 
-\item{do.log}{Logical. Should the data should be log10-transformed?}
+\item{do.log}{Logical. Should the data be log10-transformed?}
 
 \item{apts}{Optional. A subset of analytes (as \code{AptNames}) to add as points
 on top of the subarray boxplot.}
 }
 \description{
-Plots the distribution of of all analytes stratified
-by subarray as a boxplot. In SomaScan (\code{soma_adat}) data format,
-a subarray is typically a row or sample in the data.
+Plots the distribution of of all analytes, stratified
+by subarray, as a boxplot. In SomaScan (\code{soma_adat}) data format,
+the term "subarray" is analogous to sample, and typically indicates a row
+or sample in the data.
 }
 \examples{
 data <- SomaDataIO::example_data

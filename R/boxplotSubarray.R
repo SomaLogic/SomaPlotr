@@ -1,16 +1,18 @@
-#' Plot Boxplots by Subarray (sample)
+#' Plot Boxplots by Subarray (Sample)
 #'
-#' Plots the distribution of of all analytes stratified
-#' by subarray as a boxplot. In SomaScan (`soma_adat`) data format,
-#' a subarray is typically a row or sample in the data.
+#' Plots the distribution of of all analytes, stratified
+#' by subarray, as a boxplot. In SomaScan (`soma_adat`) data format,
+#' the term "subarray" is analogous to sample, and typically indicates a row
+#' or sample in the data.
 #'
 #' @family boxplots
 #' @param .data A `soma_data` or data frame object created via a call to
 #'   [read_adat()].
-#' @param color.by A column name to color the subarrays by. Typically a meta
-#'   data field in the adat such as `SlideId`.
-#' @param labels Character. A column name of `.data` used to label each box.
-#' @param do.log Logical. Should the data should be log10-transformed?
+#' @param color.by Character. A column name to color the subarrays (samples)
+#'   by. This is typically a sample processing or clinical data field in the
+#'   ADAT such as `SlideId`.
+#' @param labels Character. The column name of `.data` used to label each box.
+#' @param do.log Logical. Should the data be log10-transformed?
 #' @param y.lim Numeric. Length 2. The upper- and lower-quantiles of the
 #'   _total_ data used to determine the y-axis limits of the plot.
 #'   If `NULL`, all points are shown.
