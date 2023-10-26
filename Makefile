@@ -11,10 +11,11 @@ RSCRIPT = Rscript --vanilla
 
 
 all: check clean
+roxygen: docs
 
 docs:
 	@ $(RSCRIPT) \
-	-e "devtools::document(roclets = c('rd', 'collate', 'namespace'))"
+	-e "roxygen2::roxygenise(roclets = c('collate', 'namespace', 'rd'))"
 
 readme:
 	@ echo "Rendering README.Rmd"
