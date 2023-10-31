@@ -26,6 +26,12 @@ by one or two factor variables."><meta property="og:image" content="https://soma
 <li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/themes-and-palettes.html">Applying SomaLogic Themes and Palettes</a>
+  </div>
+</li>
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
@@ -90,7 +96,10 @@ or character class vectors.</p></dd>
 
 
 <dt>notch</dt>
-<dd><p>Should notches be drawn in the boxplots.</p></dd>
+<dd><p>Logical. Should notches be drawn in the boxplots? If FALSE
+(default), a standard box plot will be drawn. If TRUE, notches will
+be added to the median line of each box plot. See <code>notch</code> argument of
+<code>geom_boxplot()</code>.</p></dd>
 
 
 <dt>y.lab</dt>
@@ -114,7 +123,7 @@ See <code>ggtitle()</code> for <code>ggplot2</code> style graphics.</p></dd>
 
 <dt>pt.shape</dt>
 <dd><p>Numeric or Character. Recognized <code>pch</code> shapes for the
-points. Recall that <code>pch = 21 - 25</code> only are "fill-able". Other point
+points. Recall that <em>only</em> <code>pch = 21 - 25</code> are "fill-able". Other point
 characters will <em>not</em> take on the color from <code>pt.color</code>.
 See <code>geom_point()</code>.</p></dd>
 

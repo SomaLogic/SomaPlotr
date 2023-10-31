@@ -24,6 +24,12 @@
 <li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/themes-and-palettes.html">Applying SomaLogic Themes and Palettes</a>
+  </div>
+</li>
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
@@ -56,7 +62,7 @@
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">boxplotBeeswarm</span><span class="op">(</span></span>
 <span>  <span class="va">.data</span>,</span>
-<span>  notch <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  notch <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  label <span class="op">=</span> <span class="st">"Group"</span>,</span>
 <span>  main <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  y.lab <span class="op">=</span> <span class="st">"value"</span>,</span>
@@ -78,7 +84,10 @@ a numeric vector containing values for each box, or a <em>named</em>
 
 
 <dt>notch</dt>
-<dd><p>Should notches be drawn in the boxplots.</p></dd>
+<dd><p>Logical. Should notches be drawn in the boxplots? If FALSE
+(default), a standard box plot will be drawn. If TRUE, notches will
+be added to the median line of each box plot. See <code>notch</code> argument of
+<code>geom_boxplot()</code>.</p></dd>
 
 
 <dt>label</dt>
@@ -116,7 +125,7 @@ For <code><a href="plotDoubleHist.html">plotDoubleHist()</a></code>, must be <co
 
 <dt>pt.shape</dt>
 <dd><p>Numeric or Character. Recognized <code>pch</code> shapes for the
-points. Recall that <code>pch = 21 - 25</code> only are "fill-able". Other point
+points. Recall that <em>only</em> <code>pch = 21 - 25</code> are "fill-able". Other point
 characters will <em>not</em> take on the color from <code>pt.color</code>.
 See <code>geom_point()</code>.</p></dd>
 
@@ -145,88 +154,35 @@ See <code>geom_point()</code>.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/setNames.html" class="external-link">setNames</a></span><span class="op">(</span><span class="va">LETTERS</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>, <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span>, \<span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">10</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/setNames.html" class="external-link">setNames</a></span><span class="op">(</span><span class="va">LETTERS</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>, <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span>, \<span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">30</span>, <span class="fl">10</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">d</span>, <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>   <span class="co"># move `d` to the front</span></span></span>
-<span class="r-in"><span><span class="va">df</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            d         a         b         c         e</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  16.137790  5.962267 17.160437 12.224296  8.694407</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   8.104852  8.300033  4.123874  9.848116 13.884506</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  13.299635 10.252388 12.528147  8.928398 12.429347</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  12.718995  6.113065  7.904467 12.429776 15.149050</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5   8.561387 11.753652 16.303999  8.439765 10.457229</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6   9.776231  8.237438 14.153852  7.119324  8.024975</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7   7.980616 12.396308  7.038146  6.574974 13.103173</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  13.641885 10.406431  6.357749 10.867223 10.938394</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  14.662982  7.908426  8.976244 11.971031 11.418666</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10  6.984152 10.858127 14.680723  8.018336 10.203524</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           d         a         b         c         e</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  9.273276  7.720130 10.421269  7.334768  8.252517</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 15.562640  8.199926  8.566208 11.473109 14.160070</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  7.396928 12.345094  6.405675  4.478326  8.758208</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  9.516123 10.300633  9.018000 11.349304  9.278614</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 10.049990  8.693709  6.267900  7.036903  9.547196</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 10.432997 11.931898  4.283799 10.306285 13.920199</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">df</span> <span class="op">|&gt;</span> <span class="fu">boxplotBeeswarm</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Title"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Notch went outside hinges</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Do you want `notch = FALSE`?</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Notch went outside hinges</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Do you want `notch = FALSE`?</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Notch went outside hinges</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Do you want `notch = FALSE`?</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Notch went outside hinges</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Do you want `notch = FALSE`?</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Notch went outside hinges</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Do you want `notch = FALSE`?</span>
 <span class="r-plt img"><img src="boxplotBeeswarm-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span><span class="va">df</span> <span class="op">|&gt;</span> <span class="fu">boxplotBeeswarm</span><span class="op">(</span>pt.color <span class="op">=</span> <span class="st">"cyan"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Notch went outside hinges</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Do you want `notch = FALSE`?</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Notch went outside hinges</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Do you want `notch = FALSE`?</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Notch went outside hinges</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Do you want `notch = FALSE`?</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Notch went outside hinges</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Do you want `notch = FALSE`?</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Notch went outside hinges</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Do you want `notch = FALSE`?</span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">|&gt;</span> <span class="fu">boxplotBeeswarm</span><span class="op">(</span>pt.color <span class="op">=</span> <span class="st">"cyan"</span>, notch <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># add notch</span></span></span>
 <span class="r-plt img"><img src="boxplotBeeswarm-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="va">df</span> <span class="op">|&gt;</span> <span class="fu">boxplotBeeswarm</span><span class="op">(</span>cols <span class="op">=</span> <span class="st">"grey"</span><span class="op">)</span>     <span class="co"># all boxes 1 color</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Notch went outside hinges</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Do you want `notch = FALSE`?</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Notch went outside hinges</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Do you want `notch = FALSE`?</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Notch went outside hinges</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Do you want `notch = FALSE`?</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Notch went outside hinges</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Do you want `notch = FALSE`?</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Notch went outside hinges</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Do you want `notch = FALSE`?</span>
 <span class="r-plt img"><img src="boxplotBeeswarm-3.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span><span class="va">df</span> <span class="op">|&gt;</span> <span class="fu">boxplotBeeswarm</span><span class="op">(</span>label <span class="op">=</span> <span class="st">"Disease Level"</span>, y.lab <span class="op">=</span> <span class="st">"Y"</span>, notch <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">|&gt;</span> <span class="fu">boxplotBeeswarm</span><span class="op">(</span>label <span class="op">=</span> <span class="st">"Disease Level"</span>, y.lab <span class="op">=</span> <span class="st">"Y"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="boxplotBeeswarm-4.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Non-fill-able `pt.shape`</span></span></span>
+<span class="r-in"><span><span class="co"># Some point shapes can't be filled with color.</span></span></span>
+<span class="r-in"><span><span class="co"># Example of a non-fillable `pt.shape` value</span></span></span>
 <span class="r-in"><span><span class="va">df</span> <span class="op">|&gt;</span> <span class="fu">boxplotBeeswarm</span><span class="op">(</span>pt.shape <span class="op">=</span> <span class="fl">13</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Notch went outside hinges</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Do you want `notch = FALSE`?</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Notch went outside hinges</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Do you want `notch = FALSE`?</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Notch went outside hinges</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Do you want `notch = FALSE`?</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Notch went outside hinges</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Do you want `notch = FALSE`?</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Notch went outside hinges</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Do you want `notch = FALSE`?</span>
 <span class="r-plt img"><img src="boxplotBeeswarm-5.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># shapes 21 -&gt; 25 are `fill-capable`</span></span></span>
+<span class="r-in"><span><span class="co"># Shapes 21 - 25 are fillable</span></span></span>
 <span class="r-in"><span><span class="va">df</span> <span class="op">|&gt;</span> <span class="fu">boxplotBeeswarm</span><span class="op">(</span>cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"blue"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span>, pt.size <span class="op">=</span> <span class="fl">5</span>,</span></span>
 <span class="r-in"><span>                       pt.shape <span class="op">=</span> <span class="fl">23</span>, pt.color <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Notch went outside hinges</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Do you want `notch = FALSE`?</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Notch went outside hinges</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Do you want `notch = FALSE`?</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Notch went outside hinges</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Do you want `notch = FALSE`?</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Notch went outside hinges</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Do you want `notch = FALSE`?</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Notch went outside hinges</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Do you want `notch = FALSE`?</span>
 <span class="r-plt img"><img src="boxplotBeeswarm-6.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
