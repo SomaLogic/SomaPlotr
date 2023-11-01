@@ -7,5 +7,5 @@ inst/doc/*
 \.DS_Store
 \.Rhistory
 ^r\\.Rproj$
-/doc/
+docs/
 /Meta/
