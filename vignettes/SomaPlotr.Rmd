@@ -80,7 +80,7 @@ plotPDF(data$seq.8468.19)
 ```
 
 This plot has a fairly long tail, which highlights a common feature of SomaScan
-data in RFU space. As a consequence, we typically advise to plot (and analyse)
+data in RFU space. As a consequence, we typically advise to plot (and analyze)
 RFU data in `log10()` space:
 
 ```{r pdf-log10, fig.width = 6, fig.height = 4}
@@ -273,7 +273,7 @@ boxplotBeeswarm(
 )
 ```
 
-Notice the small group of low-signalling values that can be seen by adding
+Notice the small group of low-signaling values that can be seen by adding
 "beeswarm" points. These represent buffer control samples and will be
 investigated further below.
 

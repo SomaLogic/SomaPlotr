@@ -7,9 +7,6 @@ output: github_document
 
 
 ```{r setup, echo = FALSE, message = FALSE}
-library(SomaPlotr)
-library(ggplot2)
-library(scales)
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -22,22 +19,30 @@ ver <- paste0("https://img.shields.io/badge/Version-", ver,
               "-success.svg?style=flat&logo=github")
 ```
 
-```{r examples, echo = FALSE, message = FALSE}
+```{r load-pkgs, echo = FALSE, message = FALSE}
+library(SomaPlotr)
+library(ggplot2)
+library(patchwork)
+library(scales)
+
+# Simulate numeric vectors
 withr::with_seed(123, {
    x <- rnorm(200, mean = 3)
-   y <- x + rnorm(length(x), sd = 0.2)   # add random gaussian noise centered at zero
+   y <- x + rnorm(length(x), sd = 0.2)  # Add random Gaussian noise, centered at zero
 })
 
+# Simulate fold change & p-value dataset
 withr::with_seed(101, {
-  fc1 <- sort(runif(500, -2.5, 0))   # Z-scores as fc
-  fc2 <- sort(runif(500, 0, 2.5))    # Z-scores as fc
+  fc1 <- sort(runif(500, -2.5, 0))   # Z-scores as fold changes
+  fc2 <- sort(runif(500, 0, 2.5))    # Z-scores as fold changes
   p1  <- pnorm(fc1)
   p2  <- pnorm(fc2, lower.tail = FALSE)
   p   <- jitter(c(p1, p2), amount = 0.1)
-  p[p < 0] <- runif(sum(p < 0), 1e-05, 1e-02)   # floor p < 0 after jitter
+  p[p < 0] <- runif(sum(p < 0), 1e-05, 1e-02)   # Use floor p < 0 after jittering
   fc_df <- data.frame(fc = c(fc1, fc2), p = p)
 })
 
+# Simulate a clinical data frame
 timepoint <- c("Treatment", "Relapse", "Remission")
 withr::with_seed(101, {
   clin_df <- data.frame(
@@ -46,13 +51,13 @@ withr::with_seed(101, {
   )
 })
 
+# Use example datasets above to create plots
 cdf <- plotCDF(x)
 ccc <- plotConcord(x = x, y = y, main = "Concordance of 2 Continuous Variables")
 volc <- plotVolcano(fc_df, FC = fc, p.value = p, cutoff = 0.1)
 bx   <- boxplotGrouped(clin_df, y = "seq.1234.56", group.var = "TimePoint", 
                        beeswarm = TRUE, main = "Box Plot of Sample Timepoint")
 ```
-
 
 # `SomaPlotr` <a href="https://somalogic.github.io/SomaPlotr"><img src="man/figures/logo.png" align="right" height="138" alt="" /></a>
 
@@ -77,32 +82,29 @@ bx   <- boxplotGrouped(clin_df, y = "seq.1234.56", group.var = "TimePoint",
 The `SomaPlotr` R package contains various standardized plotting 
 functions designed to visualize SomaScan data in the R statistical environment.
 `SomaPlotr` is based on the "Grammar of Graphics"
-([Wilkinson, 2005](https://link.springer.com/book/10.1007/0-387-28695-0)), the same 
-layered framework of mapping variables to aesthetics that provides a structure 
-for [ggplot2](https://cran.r-project.org/package=ggplot2). 
+([Wilkinson, 2005](https://link.springer.com/book/10.1007/0-387-28695-0)), the 
+same layered framework of mapping variables to aesthetics that provides a 
+structure for [ggplot2](https://cran.r-project.org/package=ggplot2). 
 As such, `SomaPlotr` largely utilizes ggplot-style syntax, and can easily and 
 quickly create fully labeled, colored figures of SomaScan data.
 
 `SomaPlotr` is designed to generate figures that are well-suited for the 
 exploration and visualization of SomaScan data. `SomaPlotr` is therefore
-biased in towards cumulative distribution function (CDF) plots, probability 
-density function (PDF) plots, volcano and concordance plots, grouped boxplots, and more. 
+biased towards cumulative distribution function (CDF) plots, probability 
+density function (PDF) plots, volcano and concordance plots, grouped boxplots, 
+and more.
 
-Each panel in the figure below were generated with `SomaPlotr` and 
-pieced together into a grid with the
-[patchwork](https://cran.r-project.org/package=patchwork) package. 
-Read on to learn how you can create these types of graphics using `SomaPlotr`. 
-
-
-```{r plot-grid, echo = FALSE, fig.width = 12, fig.height = 10}
-library(patchwork)
-# Display plots in a grid
-(cdf + ccc) / (volc + bx)
+```{r plot-grid, echo = FALSE, fig.width = 13, fig.height = 11}
+# Display plots in a grid w/ patchwork
+(cdf + ccc) / (volc + bx )
 ```
 
+Keep reading (in the [Examples](#examples) section below) to see how these graphics can 
+be generated using functions in `SomaPlotr`. 
 
-For a full table of the visualizations that can be created with `SomaPlotr`,
-see the _Usage_ section below.
+For a full table of the visualizations that can be created with 
+`SomaPlotr`, see the [Usage](#usage) section below. For additional examples and 
+details, see the package vignette (`vignette("SomaPlotr")`).
 
 
 ----------------
@@ -111,14 +113,15 @@ see the _Usage_ section below.
 ## Installation
 
 `SomaPlotr` can be installed from [GitHub](https://github.com/SomaLogic/SomaPlotr)
-using the `remotes` package as follows:
+using the [remotes](https://CRAN.R-project.org/package=remotes) package as 
+follows:
 
 ```{r install-github, eval = FALSE}
 remotes::install_github("SomaLogic/SomaPlotr")
 ```
 
 
-## Usage
+## <a id="usage"></a>Usage
 
 To load `SomaPlotr`, simply make a call to `library()`:
 
@@ -134,31 +137,31 @@ analyzing patterns in SomaScan.
 
 ## Primary Functionality
 
-The table below provides a high-level summary of the graphics that can be created with 
-`SomaPlotr`:
+The table below provides a high-level summary of the graphics that can be 
+created with `SomaPlotr`:
 
-| Plot type     | Function(s)           |
-| :------------ | :-------------------- |
-| CDF           | `plotCDF()`, `plotCDFlist()`, `plotCDFbyGroup()` |
-| PDF           | `plotPDF()`, `plotPDFlist()`, `plotCDFbyGroup()` |
-| Volcano       | `plotVolcano()`, `plotVolcanoHTML()` |
-| Concordance   | `plotConcord()`       |
-| Histogram     | `plotDoubleHist()`    |
-| Boxplot       | `boxplotBeeswarm()`, `boxplotGrouped()`, `boxplotSubarray()` |
-| Longitudinal  | `plotLongitudinal()`  |
+| Plot type     | Description | Function(s)           |
+| :------------ | :-------- | :-------------------- |
+| CDF           | Empirical cumulative distribution function | `plotCDF()`, `plotCDFlist()`, `plotCDFbyGroup()` |
+| PDF           | Probability density function | `plotPDF()`, `plotPDFlist()`, `plotCDFbyGroup()` |
+| Volcano       | Statistical significance vs. magnitude of fold change | `plotVolcano()`, `plotVolcanoHTML()` |
+| Concordance   | Correlation coefficients of values in numeric vectors `x` and `y` | `plotConcord()`       |
+| Histogram     | Frequency distribution of numeric data | `plotDoubleHist()`    |
+| Boxplot       | Locality, spread and skewness of numeric data via quartiles | `boxplotBeeswarm()`, `boxplotGrouped()`, `boxplotSubarray()` |
+| Longitudinal  | Graphical representation of numeric data over time, by subject (also called a "trace plot") |`plotLongitudinal()`  |
 
 
 
-## Examples
+## <a id="examples"></a>Examples
 
-The plotting functions in `SomaPlotr` require a SomaScan dataset as input, and 
-generate a complete, labeled figure that can be further customized and modified,
-if desired.
+The plotting functions in `SomaPlotr` require a SomaScan dataset as input, 
+and generate a complete, labeled figure that can be further customized and 
+modified, if desired.
 
 Using `SomaPlotr`, the previously shown boxplot comparing RFU values across
 groups can be generated via `boxplotGrouped()`:
 
-```{r bx-plot}
+```{r boxplot-grouped}
 # Simulate an example dataset
 timepoint <- c("Treatment", "Relapse", "Remission")
 withr::with_seed(101, {
@@ -196,7 +199,8 @@ cdf + addCDFquantiles(x, col = "red")
 ```
 
 For a more in-depth overview of the package and a full list of example plots, 
-please see the package vignette: `vignette("SomaPlotr", package = "SomaPlotr")`.
+please see the package vignette: 
+`vignette("SomaPlotr")`.
 
 
 ----------------
@@ -204,8 +208,8 @@ please see the package vignette: `vignette("SomaPlotr", package = "SomaPlotr")`.
 
 ## Color Palettes
 
-`SomaPlotr` provides color palettes that correspond to SomaLogic Operating Co., Inc.
-company color schemes:
+`SomaPlotr` provides color palettes that correspond to SomaLogic Operating 
+Co., Inc. company color schemes:
 
 ```{r palette-soma, out.width = "60%", fig.height = 4}
 scales::show_col(palette_soma(n = 8))
@@ -214,7 +218,8 @@ scales::show_col(palette_soma(n = 8))
 These palettes can be incorporated into figures in a variety of ways. The 
 `soma_colors` and `soma_colors2` objects provide individual 
 hex colors for the SomaLogic color scheme. These objects can be used
-to transform the `ggplot` default color palette.
+to transform the [ggplot2](https://ggplot2.tidyverse.org/) default 
+color palette.
 
 ```{r soma-colors2, out.width = "60%"}
 data.frame(x = seq_along(soma_colors2), y = seq_along(soma_colors2)) |> 
@@ -226,6 +231,7 @@ data.frame(x = seq_along(soma_colors2), y = seq_along(soma_colors2)) |>
         axis.ticks.y = element_blank())
 ```
 
+
 ## Themes
 
 The `theme_soma()` theme and `scale_color_soma()` functions provide a uniform 
@@ -233,21 +239,26 @@ plotting and color scheme. By using the `theme_soma()` theme, polished,
 publication ready figures can be generated with consistent font sizes,
 backgrounds, legend positions, and more.
 
-Below on the left, `p1` was created with the default
-[ggplot2](https://cran.r-project.org/package=ggplot2) theme.
-On the right, `p2` has the `theme_soma()` theme and `scale_color_soma()`
-color scale applied.
+Below, the left plot (`p1`) was created with the `mtcars` data set, using all 
+`ggplot2` defaults. The right plot (`p2`) uses the same data set, but with the 
+`theme_soma()` theme and `scale_color_soma()` color scale applied.
 
-```{r theme-soma, fig.width = 11, fig.height = 6}
+```{r theme-soma}
 p1 <- ggplot(mtcars, aes(x = hp, y = mpg, color = factor(cyl))) +
   geom_point(alpha = 0.5, size = 4)
 
-p2 <- p1 + theme_soma(base_size = 15) + scale_color_soma()
+p2 <- p1 + 
+  theme_soma() + 
+  scale_color_soma()
+```
 
+```{r theme-comparison, echo=FALSE, fig.width=11, fig.height=5}
 p1 + p2
 ```
 
-For a full list of available color scales and themes, see `?SomaPlotr::theme_soma`.
+More detailed examples illustrating how to apply these themes can be found in 
+the `vignette("SomaPlotr", )`. For a full list of available color scales and 
+themes, see `?SomaPlotr::theme_soma`.
 
 
 ------------
