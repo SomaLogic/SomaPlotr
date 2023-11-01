@@ -33,34 +33,34 @@ and quickly create fully labeled, colored figures of SomaScan data.
 
 `SomaPlotr` is designed to generate figures that are well-suited for the
 exploration and visualization of SomaScan data. `SomaPlotr` is therefore
-biased in towards cumulative distribution function (CDF) plots,
-probability density function (PDF) plots, volcano and concordance plots,
-grouped boxplots, and more.
-
-Each panel in the figure below were generated with `SomaPlotr` and
-pieced together into a grid with the
-[patchwork](https://cran.r-project.org/package=patchwork) package. Read
-on to learn how you can create these types of graphics using
-`SomaPlotr`.
+biased towards cumulative distribution function (CDF) plots, probability
+density function (PDF) plots, volcano and concordance plots, grouped
+boxplots, and more.
 
 <img src="man/figures/README-plot-grid-1.png" style="display: block; margin: auto auto auto 0;" />
 
+Keep reading (in the [Examples](#examples) section below) to see how
+these graphics can be generated using functions in `SomaPlotr`.
+
 For a full table of the visualizations that can be created with
-`SomaPlotr`, see the *Usage* section below.
+`SomaPlotr`, see the [Usage](#usage) section below. For additional
+examples and details, see the package vignette
+(`vignette("SomaPlotr")`).
 
 ------------------------------------------------------------------------
 
 ## Installation
 
 `SomaPlotr` can be installed from
-[GitHub](https://github.com/SomaLogic/SomaPlotr) using the `remotes`
-package as follows:
+[GitHub](https://github.com/SomaLogic/SomaPlotr) using the
+[remotes](https://CRAN.R-project.org/package=remotes) package as
+follows:
 
 ``` r
 remotes::install_github("SomaLogic/SomaPlotr")
 ```
 
-## Usage
+## <a id="usage"></a>Usage
 
 To load `SomaPlotr`, simply make a call to `library()`:
 
@@ -78,17 +78,17 @@ contain are popular for exploring and analyzing patterns in SomaScan.
 The table below provides a high-level summary of the graphics that can
 be created with `SomaPlotr`:
 
-| Plot type    | Function(s)                                                  |
-|:-------------|:-------------------------------------------------------------|
-| CDF          | `plotCDF()`, `plotCDFlist()`, `plotCDFbyGroup()`             |
-| PDF          | `plotPDF()`, `plotPDFlist()`, `plotCDFbyGroup()`             |
-| Volcano      | `plotVolcano()`, `plotVolcanoHTML()`                         |
-| Concordance  | `plotConcord()`                                              |
-| Histogram    | `plotDoubleHist()`                                           |
-| Boxplot      | `boxplotBeeswarm()`, `boxplotGrouped()`, `boxplotSubarray()` |
-| Longitudinal | `plotLongitudinal()`                                         |
+| Plot type    | Description                                                                                 | Function(s)                                                  |
+|:-------------|:--------------------------------------------------------------------------------------------|:-------------------------------------------------------------|
+| CDF          | Empirical cumulative distribution function                                                  | `plotCDF()`, `plotCDFlist()`, `plotCDFbyGroup()`             |
+| PDF          | Probability density function                                                                | `plotPDF()`, `plotPDFlist()`, `plotCDFbyGroup()`             |
+| Volcano      | Statistical significance vs. magnitude of fold change                                       | `plotVolcano()`, `plotVolcanoHTML()`                         |
+| Concordance  | Correlation coefficients of values in numeric vectors `x` and `y`                           | `plotConcord()`                                              |
+| Histogram    | Frequency distribution of numeric data                                                      | `plotDoubleHist()`                                           |
+| Boxplot      | Locality, spread and skewness of numeric data via quartiles                                 | `boxplotBeeswarm()`, `boxplotGrouped()`, `boxplotSubarray()` |
+| Longitudinal | Graphical representation of numeric data over time, by subject (also called a “trace plot”) | `plotLongitudinal()`                                         |
 
-## Examples
+## <a id="examples"></a>Examples
 
 The plotting functions in `SomaPlotr` require a SomaScan dataset as
 input, and generate a complete, labeled figure that can be further
@@ -117,7 +117,7 @@ boxplotGrouped(
 )
 ```
 
-<img src="man/figures/README-bx-plot-1.png" style="display: block; margin: auto auto auto 0;" />
+<img src="man/figures/README-boxplot-grouped-1.png" style="display: block; margin: auto auto auto 0;" />
 
 Similarly, we can replicate the CDF plot in the introductory figure
 above via `plotCDF()`:
@@ -141,15 +141,14 @@ cdf + addCDFquantiles(x, col = "red")
 <img src="man/figures/README-cdf-quantiles-1.png" width="60%" style="display: block; margin: auto auto auto 0;" />
 
 For a more in-depth overview of the package and a full list of example
-plots, please see the package vignette:
-`vignette("SomaPlotr", package = "SomaPlotr")`.
+plots, please see the package vignette: `vignette("SomaPlotr")`.
 
 ------------------------------------------------------------------------
 
 ## Color Palettes
 
 `SomaPlotr` provides color palettes that correspond to SomaLogic
-Operating Co., Inc. company color schemes:
+Operating Co., Inc. company color schemes:
 
 ``` r
 scales::show_col(palette_soma(n = 8))
@@ -160,7 +159,8 @@ scales::show_col(palette_soma(n = 8))
 These palettes can be incorporated into figures in a variety of ways.
 The `soma_colors` and `soma_colors2` objects provide individual hex
 colors for the SomaLogic color scheme. These objects can be used to
-transform the `ggplot` default color palette.
+transform the [ggplot2](https://ggplot2.tidyverse.org/) default color
+palette.
 
 ``` r
 data.frame(x = seq_along(soma_colors2), y = seq_along(soma_colors2)) |> 
@@ -181,24 +181,25 @@ uniform plotting and color scheme. By using the `theme_soma()` theme,
 polished, publication ready figures can be generated with consistent
 font sizes, backgrounds, legend positions, and more.
 
-Below on the left, `p1` was created with the default
-[ggplot2](https://cran.r-project.org/package=ggplot2) theme. On the
-right, `p2` has the `theme_soma()` theme and `scale_color_soma()` color
+Below, the left plot (`p1`) was created with the `mtcars` data set,
+using all `ggplot2` defaults. The right plot (`p2`) uses the same data
+set, but with the `theme_soma()` theme and `scale_color_soma()` color
 scale applied.
 
 ``` r
 p1 <- ggplot(mtcars, aes(x = hp, y = mpg, color = factor(cyl))) +
   geom_point(alpha = 0.5, size = 4)
 
-p2 <- p1 + theme_soma(base_size = 15) + scale_color_soma()
-
-p1 + p2
+p2 <- p1 + 
+  theme_soma() + 
+  scale_color_soma()
 ```
 
-<img src="man/figures/README-theme-soma-1.png" style="display: block; margin: auto auto auto 0;" />
+<img src="man/figures/README-theme-comparison-1.png" style="display: block; margin: auto auto auto 0;" />
 
-For a full list of available color scales and themes, see
-`?SomaPlotr::theme_soma`.
+More detailed examples illustrating how to apply these themes can be
+found in the `vignette("SomaPlotr", )`. For a full list of available
+color scales and themes, see `?SomaPlotr::theme_soma`.
 
 ------------------------------------------------------------------------
 
