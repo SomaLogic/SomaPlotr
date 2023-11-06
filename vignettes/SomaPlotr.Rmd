@@ -372,6 +372,6 @@ of the collected sample.
 ## Color Palettes
 
 For examples of all plotting themes and palettes available in this
-package, see the themes vignette (`TODO`).
+package, see the themes vignette (`vignette("themes-and-palettes")`).
 
 
