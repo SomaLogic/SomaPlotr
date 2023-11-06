@@ -198,7 +198,7 @@ p2 <- p1 +
 <img src="man/figures/README-theme-comparison-1.png" style="display: block; margin: auto auto auto 0;" />
 
 More detailed examples illustrating how to apply these themes can be
-found in the `vignette("SomaPlotr", )`. For a full list of available
+found in `vignette("themes-and-palettes")`. For a full list of available
 color scales and themes, see `?SomaPlotr::theme_soma`.
 
 ------------------------------------------------------------------------
