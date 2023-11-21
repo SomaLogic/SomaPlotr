@@ -13,6 +13,9 @@ df <- df |>  # map TimePoint -> numeric
     data.frame(TimePoint = c("baseline", "6 months", "12 months", "24 months"),
                time      = c(0,           6,          12,          24)), by = "TimePoint")
 
+df$TimePoint <- factor(df$TimePoint, levels = c("baseline", "6 months",
+                                                "12 months", "24 months"))
+
 # Testing ------
 test_that("plotLongitudinal() defaults produce the expected plot", {
    expect_snapshot_plot(
