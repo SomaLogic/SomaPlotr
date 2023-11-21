@@ -80,7 +80,7 @@ boxplotSubarray <- function(.data, color.by = NULL, labels = "SampleId",
   }
 
   sym_label <- sym(labels)
-  plot_data <- dplyr::select(.data, feats, !!sym_label) |>
+  plot_data <- dplyr::select(.data, all_of(feats), !!sym_label) |>
     mutate(.id = row_number()) |>
     gather(key = "AptName", value = "RFU_values", -!!sym_label, -.id)
 
