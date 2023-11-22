@@ -10,7 +10,7 @@
 #'     \item `time`: The field containing the time-series information, the x-axis.
 #'     \item `id`: The field containing `subject` identifiers, i.e. how the points
 #'       in each line should be connected.
-#'     \item `color`: A field describing how groups should be split/colored. The
+#'     \item `color.by`: A field describing how groups should be split/colored. The
 #'       only argument with a default value.
 #'   }
 #'
@@ -23,18 +23,16 @@
 #'   containing the x-axis (i.e. typically the "time" variable).
 #' @param id A quoted or unquoted variable name in `data` for the column
 #'   containing the subject IDs (i.e. how the samples should be connected).
-#' @param color A quoted or unquoted variable name in `data` for the column
-#'   indicating how to color/group the lines. Default is by `Sex`. If
-#'   _no grouping_ is desired, simply create a dummy variable and pass that
-#'   column. See example below.
+#' @param color.by A quoted or unquoted variable name in `data` for the column
+#'   indicating how to color/group the lines.
 #' @param summary.line A function describing how to summarize the lines.
 #'   Typically [mean()] or [median()]. Set to `NULL` to suppress summary lines.
 #' @param size Numeric. The size for the points on the subject lines.
 #' @param y.lab Character. Optional string to set the y-axis label.
-#'   Defaults to `log10(RFU)` if a `SeqId` name is detected.
+#'   Defaults to `log10(RFU)` if a `SeqId` name is detected for `y`.
 #' @param add.box Logical. Should boxplots be drawn for each time point?
-#'   __Note__: this groups the subjects together by time point and looks only at
-#'   the differences across time points, thus `time` _must_ be a factor.
+#'   __Note__: this groups the subjects together by time point and looks only
+#'   at the differences across time points, thus `time` _must_ be a factor.
 #' @return A longitudinal plot of samples by subject.
 #' @author Stu Field
 #' @seealso [geom_line()], [theme()]
@@ -60,7 +58,11 @@
 #'                                          TRUE    ~ "medium"))
 #'
 #' # No title; no x-axis label; nothing fancy
-#' plotLongitudinal(new, y = "seq.1234.56", time = "TimePoint", id = "id", color = "Sample")
+#' plotLongitudinal(new, y = "seq.1234.56", time = "TimePoint", id = "id")
+#'
+#' # Color lines by the 'Sample' variable
+#' plotLongitudinal(new, y = "seq.1234.56", time = "TimePoint", id = "id",
+#'                  color.by = "Sample")
 #'
 #' # Color lines by the 'Sample' variable, using the 'time' numeric x variable
 #' plotLongitudinal(new, y = "seq.1234.56", time = "time", id = "id",
@@ -75,36 +77,29 @@
 #'                  color = "Sample", summary.line = mean)
 #'
 #' # Suppress summary line with `NULL`
-#' plotLongitudinal(new, y = "seq.1234.56", id = "id", time = "time", color = "Sample",
-#'                  summary.line = NULL, main = "No Summary Lines")
+#' plotLongitudinal(new, y = "seq.1234.56", id = "id", time = "time",
+#'                  color.by = "Sample", summary.line = NULL,
+#'                  main = "No Summary Lines")
 #'
 #' # Boxplots by time point; `time` variable (TimePoint) must be a factor
 #' plotLongitudinal(new, "seq.1234.56", id = "id", time = "TimePoint",
-#'                  color = "Sample", add.box = TRUE, summary.line = NULL,
+#'                  color.by = "Sample", add.box = TRUE, summary.line = NULL,
 #'                  main = "With Time Point Boxplots")
-#'
-#' # Suppress group-wise colors
-#' # by setting up `dummy` column
-#' new$dummy <- "A"     # call it anything
-#' plotLongitudinal(new, "seq.1234.56", id = "id", time = "TimePoint",
-#'                  color = "dummy", add.box = TRUE, summary.line = NULL,
-#'                  main = "Boxplots | Suppress Group Color") +
-#'   ggplot2::theme(legend.pos = "none")
 #'
 #' # Facet by `Sample`
 #' p <- plotLongitudinal(new, y = "seq.1234.56", id = "id", time = "time",
-#'                       color = "Sample", summary.line = mean)
+#'                       color.by = "Sample", summary.line = mean)
 #'
 #' p + ggplot2::facet_wrap(~Sample) +
 #'   ggplot2::ggtitle("Facet by `Sample`")
 #'
-#' @importFrom dplyr select arrange group_by summarise
+#' @importFrom dplyr select all_of arrange group_by summarise
 #' @importFrom ggplot2 ggplot labs aes geom_boxplot geom_line geom_point
 #' @importFrom rlang enquo quo_is_null ensym get_expr !! !!!
 #' @importFrom tidyr pivot_longer
 #' @importFrom SomaDataIO is.apt
 #' @export
-plotLongitudinal <- function(data, y, time, id, color = Sex,
+plotLongitudinal <- function(data, y, time, id, color.by = NULL,
                              summary.line = stats::median,
                              size = 2.5, main = NULL,
                              y.lab = bquote(italic(log)[10] ~ (RFU)),
@@ -114,15 +109,15 @@ plotLongitudinal <- function(data, y, time, id, color = Sex,
   id    <- ensym(id)
   y     <- ensym(y)
   time  <- ensym(time)
-  color <- enquo(color)
+  color.by <- enquo(color.by)
 
-  if ( quo_is_null(color) ) { # Prevents forced evaluation of color
+  if ( quo_is_null(color.by) ) { # Prevents forced evaluation of color.by
     data$.plot_group_var <- ""
     .plot_group_var <- ".plot_group_var"
     keys  <- c(y, time, id, ensym(.plot_group_var))
   } else {
-    .plot_group_var <- ensym(color)
-    data$.plot_group_var <- data[[get_expr(color)]]
+    .plot_group_var <- ensym(color.by)
+    data$.plot_group_var <- data[[get_expr(color.by)]]
     keys  <- c(y, time, id, .plot_group_var)
   }
 
@@ -172,8 +167,8 @@ plotLongitudinal <- function(data, y, time, id, color = Sex,
                    fill = NA, colour = "grey")
   }
 
-  if ( quo_is_null(color)) {        # Remove legend when no color/grouping
-    p <- p + guides(color = "none") # var is specified
+  if ( quo_is_null(color.by) ) {        # Remove legend when no color/grouping
+    p <- p + guides(color = "none")     # var is specified
   }
 
   p
