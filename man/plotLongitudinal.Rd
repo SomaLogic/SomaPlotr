@@ -9,7 +9,7 @@ plotLongitudinal(
   y,
   time,
   id,
-  color = Sex,
+  color.by = NULL,
   summary.line = stats::median,
   size = 2.5,
   main = NULL,
@@ -31,10 +31,8 @@ containing the x-axis (i.e. typically the "time" variable).}
 \item{id}{A quoted or unquoted variable name in \code{data} for the column
 containing the subject IDs (i.e. how the samples should be connected).}
 
-\item{color}{A quoted or unquoted variable name in \code{data} for the column
-indicating how to color/group the lines. Default is by \code{Sex}. If
-\emph{no grouping} is desired, simply create a dummy variable and pass that
-column. See example below.}
+\item{color.by}{A quoted or unquoted variable name in \code{data} for the column
+indicating how to color/group the lines.}
 
 \item{summary.line}{A function describing how to summarize the lines.
 Typically \code{\link[=mean]{mean()}} or \code{\link[=median]{median()}}. Set to \code{NULL} to suppress summary lines.}
@@ -45,14 +43,14 @@ Typically \code{\link[=mean]{mean()}} or \code{\link[=median]{median()}}. Set to
 See \code{\link[=ggtitle]{ggtitle()}} for \code{ggplot2} style graphics.}
 
 \item{y.lab}{Character. Optional string to set the y-axis label.
-Defaults to \code{log10(RFU)} if a \code{SeqId} name is detected.}
+Defaults to \code{log10(RFU)} if a \code{SeqId} name is detected for \code{y}.}
 
 \item{x.lab}{Character. Optional string for the x-axis. Otherwise
 one is automatically generated (default).}
 
 \item{add.box}{Logical. Should boxplots be drawn for each time point?
-\strong{Note}: this groups the subjects together by time point and looks only at
-the differences across time points, thus \code{time} \emph{must} be a factor.}
+\strong{Note}: this groups the subjects together by time point and looks only
+at the differences across time points, thus \code{time} \emph{must} be a factor.}
 }
 \value{
 A longitudinal plot of samples by subject.
@@ -68,7 +66,7 @@ In order to generate a longitudinal plot by sample, 4 variables
 \item \code{time}: The field containing the time-series information, the x-axis.
 \item \code{id}: The field containing \code{subject} identifiers, i.e. how the points
 in each line should be connected.
-\item \code{color}: A field describing how groups should be split/colored. The
+\item \code{color.by}: A field describing how groups should be split/colored. The
 only argument with a default value.
 }
 }
@@ -94,7 +92,11 @@ new <- df |>  # Map 'TimePoint' var (character) to a numeric
                                          TRUE    ~ "medium"))
 
 # No title; no x-axis label; nothing fancy
-plotLongitudinal(new, y = "seq.1234.56", time = "TimePoint", id = "id", color = "Sample")
+plotLongitudinal(new, y = "seq.1234.56", time = "TimePoint", id = "id")
+
+# Color lines by the 'Sample' variable
+plotLongitudinal(new, y = "seq.1234.56", time = "TimePoint", id = "id",
+                 color.by = "Sample")
 
 # Color lines by the 'Sample' variable, using the 'time' numeric x variable
 plotLongitudinal(new, y = "seq.1234.56", time = "time", id = "id",
@@ -109,25 +111,18 @@ plotLongitudinal(new, y = "seq.1234.56", id = "id", time = "time",
                  color = "Sample", summary.line = mean)
 
 # Suppress summary line with `NULL`
-plotLongitudinal(new, y = "seq.1234.56", id = "id", time = "time", color = "Sample",
-                 summary.line = NULL, main = "No Summary Lines")
+plotLongitudinal(new, y = "seq.1234.56", id = "id", time = "time",
+                 color.by = "Sample", summary.line = NULL,
+                 main = "No Summary Lines")
 
 # Boxplots by time point; `time` variable (TimePoint) must be a factor
 plotLongitudinal(new, "seq.1234.56", id = "id", time = "TimePoint",
-                 color = "Sample", add.box = TRUE, summary.line = NULL,
+                 color.by = "Sample", add.box = TRUE, summary.line = NULL,
                  main = "With Time Point Boxplots")
-
-# Suppress group-wise colors
-# by setting up `dummy` column
-new$dummy <- "A"     # call it anything
-plotLongitudinal(new, "seq.1234.56", id = "id", time = "TimePoint",
-                 color = "dummy", add.box = TRUE, summary.line = NULL,
-                 main = "Boxplots | Suppress Group Color") +
-  ggplot2::theme(legend.pos = "none")
 
 # Facet by `Sample`
 p <- plotLongitudinal(new, y = "seq.1234.56", id = "id", time = "time",
-                      color = "Sample", summary.line = mean)
+                      color.by = "Sample", summary.line = mean)
 
 p + ggplot2::facet_wrap(~Sample) +
   ggplot2::ggtitle("Facet by `Sample`")
