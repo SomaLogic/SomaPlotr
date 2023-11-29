@@ -14,8 +14,10 @@ boxplotSubarray(
 )
 }
 \arguments{
-\item{.data}{A \code{soma_data} or data frame object created via a call to
-\code{\link[=read_adat]{read_adat()}}.}
+\item{.data}{A \code{soma_data} or data frame object, created from a SomaScan
+ADAT file, via a call to \code{\link[=read_adat]{read_adat()}}. This object must contain the
+following columns: \code{PlateId}, \code{SampleId}, \code{SampleType}, \code{SampleMatrix},
+\code{Barcode2d}, \code{SlideId}, \code{Subarray}, and \code{HybControlNormScale}.}
 
 \item{color.by}{Character. A column name to color the subarrays (samples)
 by. This is typically a sample processing or clinical data field in the
@@ -33,10 +35,11 @@ If \code{NULL}, all points are shown.}
 on top of the subarray boxplot.}
 }
 \description{
-Plots the distribution of of all analytes, stratified
-by subarray, as a boxplot. In SomaScan (\code{soma_adat}) data format,
-the term "subarray" is analogous to sample, and typically indicates a row
-or sample in the data.
+Plots the distribution of all analytes, stratified by subarray, as a
+boxplot. These plots are intended to be used as a quality control
+visualization tool for SomaScan assay runs. In SomaScan (\code{soma_adat}) data
+format, the term "subarray" is analogous to sample, and typically indicates
+a row in the data.
 }
 \examples{
 data <- SomaDataIO::example_data
@@ -59,6 +62,10 @@ boxplotSubarray(data, color.by = "SampleType", apts = hybs)
 
 # Zoom to (20, 80) quantiles
 boxplotSubarray(data, color.by = "SampleType", y.lim = c(0.2, 0.8))
+
+# Group by an additional variable
+boxplotSubarray(data, color.by = "SampleType") +
+  ggplot2::facet_wrap(~PlateId)
 }
 \seealso{
 \code{\link[=geom_boxplot]{geom_boxplot()}}

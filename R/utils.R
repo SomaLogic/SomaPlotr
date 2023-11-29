@@ -129,3 +129,8 @@ value <- function(x) {
   fold_bool <- (x / med > fold.crit) | (med / x > fold.crit)    # FC criterion
   which(stat_bool & fold_bool)
 }
+
+# Vectors of expected feature columns in a SomaLogic ADAT, split by class
+known_chr <- c("PlateId", "SampleId", "SampleType", "SampleMatrix",
+               "Barcode2d")
+known_dbl <- c("SlideId", "Subarray", "HybControlNormScale")
