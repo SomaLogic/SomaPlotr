@@ -1,13 +1,16 @@
 #' Plot Boxplots by Subarray (Sample)
 #'
-#' Plots the distribution of of all analytes, stratified
-#' by subarray, as a boxplot. In SomaScan (`soma_adat`) data format,
-#' the term "subarray" is analogous to sample, and typically indicates a row
-#' or sample in the data.
+#' Plots the distribution of all analytes, stratified by subarray, as a
+#' boxplot. These plots are intended to be used as a quality control
+#' visualization tool for SomaScan assay runs. In SomaScan (`soma_adat`) data
+#' format, the term "subarray" is analogous to sample, and typically indicates
+#' a row in the data.
 #'
 #' @family boxplots
-#' @param .data A `soma_data` or data frame object created via a call to
-#'   [read_adat()].
+#' @param .data A `soma_data` or data frame object, created from a SomaScan
+#'   ADAT file, via a call to [read_adat()]. This object must contain the
+#'   following columns: `PlateId`, `SampleId`, `SampleType`, `SampleMatrix`,
+#'   `Barcode2d`, `SlideId`, `Subarray`, and `HybControlNormScale`.
 #' @param color.by Character. A column name to color the subarrays (samples)
 #'   by. This is typically a sample processing or clinical data field in the
 #'   ADAT such as `SlideId`.
@@ -41,18 +44,33 @@
 #'
 #' # Zoom to (20, 80) quantiles
 #' boxplotSubarray(data, color.by = "SampleType", y.lim = c(0.2, 0.8))
-#' @importFrom dplyr arrange select mutate row_number recode filter
+#'
+#' # Group by an additional variable
+#' boxplotSubarray(data, color.by = "SampleType") +
+#'   ggplot2::facet_wrap(~PlateId)
+#' @importFrom dplyr all_of arrange select mutate row_number
+#' @importFrom dplyr recode filter
 #' @importFrom ggplot2 geom_boxplot scale_x_discrete labs coord_cartesian
 #' @importFrom ggplot2 theme element_blank element_text aes geom_point
 #' @importFrom rlang sym !! !!!
 #' @importFrom stats quantile
-#' @importFrom tidyr gather
+#' @importFrom tidyr pivot_longer
 #' @importFrom SomaDataIO getAnalytes
 #' @export
 boxplotSubarray <- function(.data, color.by = NULL, labels = "SampleId",
                             y.lim = NULL, do.log = TRUE, apts = NULL) {
 
+  reqd_cols <- c(known_chr, known_dbl)
   feats <- getAnalytes(.data)
+
+  if ( !all(reqd_cols %in% names(.data)) ) {
+    msng <- setdiff(reqd_cols, names(.data))
+    stop(
+      "The object provided to the `.data =` argument is missing ",
+      "the following required feature columns: ",
+      paste(msng, collapse = ", "), call. = FALSE
+    )
+  }
 
   if ( length(labels) > 1L || !labels %in% names(.data) ) {
     stop(
@@ -80,9 +98,13 @@ boxplotSubarray <- function(.data, color.by = NULL, labels = "SampleId",
   }
 
   sym_label <- sym(labels)
-  plot_data <- dplyr::select(.data, all_of(feats), !!sym_label) |>
+  plot_data <- dplyr::select(.data, all_of(feats), !!sym_label,
+                             all_of(c(reqd_cols))) |>
     mutate(.id = row_number()) |>
-    gather(key = "AptName", value = "RFU_values", -!!sym_label, -.id)
+    pivot_longer(names_to = "AptName", values_to = "RFU_values",
+                 values_transform = list(AptName = as.character,
+                                         RFU_values = as.numeric),
+                 -c(!!sym_label, .id, reqd_cols))
 
   if ( is.null(color.by) ) {
     plot_data$class <- ""
