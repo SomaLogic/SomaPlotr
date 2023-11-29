@@ -123,6 +123,7 @@ boxplotSubarray <- function(.data, color.by = NULL, labels = "SampleId",
                      labels = .data[[labels]]) +
     labs(x = NULL, y = ylab) +
     coord_cartesian(ylim = y.lim) +
+    theme_soma() +
     theme(legend.title = element_blank(),
           axis.text.x  = element_text(angle = 45, hjust = 1)) +
     NULL
