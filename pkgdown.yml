@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   SomaPlotr: SomaPlotr.html
   themes-and-palettes: themes-and-palettes.html
-last_built: 2023-11-06T16:45Z
+last_built: 2023-12-14T04:45Z
 urls:
   reference: https://somalogic.github.io/SomaPlotr/reference
   article: https://somalogic.github.io/SomaPlotr/articles
