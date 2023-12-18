@@ -40,7 +40,7 @@ template:
 
 home:
   sidebar:
-    structure: [links, oss, license, community, citation, authors, dev, toc]
+    structure: [links, help, oss, license, citation, authors, dev, toc]
     components:
       oss:
         title: Other Software
@@ -49,6 +49,11 @@ home:
           [SomaScan.db](https://somalogic.github.io/SomaScan.db/) <br />
           [Canopy-Python](https://github.com/SomaLogic/Canopy/) <br />
           [DataDelve Statistics](https://somalogic.com/datadelve-statistics/)
+      help:
+        title: Getting Help
+        text: >
+          [Ask a question](https://somalogic.github.io/SomaPlotr/SUPPORT.html) <br />
+          [Report a bug](https://github.com/SomaLogic/SomaPlotr/issues)
   links:
   - text: Learn more about SomaScan
     href: http://www.somalogic.com
@@ -61,17 +66,17 @@ navbar:
   structure:
     left: [intro, reference, articles, FAQs, news]
     right: [search, github]
-  components:
-    FAQs:
-      text: FAQs
-      menu:
-      - text: SomaScan FAQs
-      - text: Standard Plotting (TODO)
-        href: articles/todo.html
-      - text: ---
-      - text: Best Practices
-      - text: Plotting SomaScan (TODO)
-        href: articles/todo.html
+  # components:
+  #   FAQs:
+  #     text: FAQs
+  #     menu:
+  #     - text: SomaScan FAQs
+  #     - text: Standard Plotting (TODO)
+  #       href: articles/todo.html
+  #     - text: ---
+  #     - text: Best Practices
+  #     - text: Plotting SomaScan (TODO)
+  #       href: articles/todo.html
 
 articles:
   - title: Getting Started
