@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# `SomaPlotr` <a href="https://somalogic.github.io/SomaPlotr"><img src="man/figures/logo.png" align="right" height="138" alt="" /></a>
+# SomaPlotr <a href="https://somalogic.github.io/SomaPlotr"><img src="man/figures/logo.png" align="right" height="138" alt="SomaPlotr website" /></a>
 
 <!-- badges: start -->
 
