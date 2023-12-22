@@ -12,7 +12,7 @@ authors:
     href: http://www.somalogic.com
   footer:
     roles: [fnd]
-    text: "was developed by the Bioinformatics Dept.,"
+    text: "was developed by the Bioinformatics Dept. at"
   sidebar:
     roles: [cre, fnd]
     before: "Special :pray: to:"
@@ -22,10 +22,10 @@ authors:
 
 footer:
   structure:
-    left: [package, developed_by]
+    left: [logo, package, developed_by]
     right: built_with
   components:
-    logo: "<img src='man/figures/logo.png' width='20'> "
+    logo: "<img src='favicon-16x16.png'> "
 
 template:
   bootstrap: 5
@@ -47,7 +47,7 @@ home:
         text: >
           [SomaDataIO](https://somalogic.github.io/SomaDataIO/) <br />
           [SomaScan.db](https://somalogic.github.io/SomaScan.db/) <br />
-          [Canopy-Python](https://github.com/SomaLogic/Canopy/) <br />
+          [Canopy (Python)](https://github.com/SomaLogic/Canopy/) <br />
           [DataDelve Statistics](https://somalogic.com/datadelve-statistics/)
       help:
         title: Getting Help
@@ -57,26 +57,21 @@ home:
   links:
   - text: Learn more about SomaScan
     href: http://www.somalogic.com
-  - text: Tech Notes
+  - text: Read SomaScan tech notes
     href: http://www.somalogic.com/tech-notes/
-  - text: Contact Us
-    href: https://somalogic.com/contact-us/
 
 navbar:
   structure:
     left: [intro, reference, articles, FAQs, news]
     right: [search, github]
-  # components:
-  #   FAQs:
-  #     text: FAQs
-  #     menu:
-  #     - text: SomaScan FAQs
-  #     - text: Standard Plotting (TODO)
-  #       href: articles/todo.html
-  #     - text: ---
-  #     - text: Best Practices
-  #     - text: Plotting SomaScan (TODO)
-  #       href: articles/todo.html
+  components:
+    FAQs:
+      text: Coming Soon
+      menu:
+      - text: SomaScan FAQs
+      - text: ---
+      - text: Best Practices
+      - text: Plotting SomaScan
 
 articles:
   - title: Getting Started
