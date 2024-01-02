@@ -30,6 +30,16 @@
     <a class="dropdown-item" href="../articles/themes-and-palettes.html">Applying SomaLogic Themes and Palettes</a>
   </div>
 </li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-coming-soon">Coming Soon</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-coming-soon">
+    <h6 class="dropdown-header" data-toc-skip>Plotting SomaScan</h6>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Distributions (PDF/CDF)</h6>
+    <h6 class="dropdown-header" data-toc-skip>Plot Scale Factors</h6>
+    <h6 class="dropdown-header" data-toc-skip>ROC Curves</h6>
+  </div>
+</li>
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
@@ -159,12 +169,12 @@ See <code>geom_point()</code>.</p></dd>
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">d</span>, <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>   <span class="co"># move `d` to the front</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           d         a         b         c         e</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  4.840601 10.512683  5.854400 14.139445  8.923756</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 12.732353 10.333391 10.964157  9.889819 11.068121</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 13.666873 11.511185 10.897919  7.951959  5.808564</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  6.270712 11.280633  6.796719  2.885987 15.180279</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  6.452370  9.068796 13.929502 10.771466 11.042067</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 11.377449 11.989973  8.486120 12.853300 14.265286</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 11.694203 10.546160  4.905047  9.557577 10.913936</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  6.568846  7.129584 12.398250 11.739577  7.010643</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  7.836173  4.880112  6.437473 10.966119  7.505319</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 16.484990 14.012575 10.940745 10.718636 12.368687</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  6.364143 12.914953  6.578257 16.348840 10.433808</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  8.153330 10.042241  2.365300 13.067858 11.214312</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">df</span> <span class="op">|&gt;</span> <span class="fu">boxplotBeeswarm</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Title"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="boxplotBeeswarm-1.png" alt="" width="700" height="433"></span>
@@ -193,7 +203,7 @@ See <code>geom_point()</code>.</p></dd>
    </div>
   <footer><div class="container">
   <div class="pkgdown-footer-left">
-  <p></p><p>SomaPlotr was developed by the Bioinformatics Dept., <a href="http://www.somalogic.com" class="external-link">SomaLogic Operating Co., Inc.</a>.</p>
+  <p></p><p><img src="favicon-16x16.png"> SomaPlotr was developed by the Bioinformatics Dept. at <a href="http://www.somalogic.com" class="external-link">SomaLogic Operating Co., Inc.</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">
