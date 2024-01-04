@@ -354,10 +354,10 @@ The longitudinal plot can now be generated:
 ```{r long-plot, fig.width = 8, fig.height = 4}
 plotLongitudinal(
   data  =  df_long,
-  y     = seq.10021.1,
-  time  = TimePoint,
-  id    = SampleId,
-  color = TissueType,
+  y     = "seq.10021.1",
+  time  = "TimePoint",
+  id    = "SampleId",
+  color = "TissueType",
   summary.line = NULL   # suppress summary lines
 )
 ```

@@ -26,6 +26,7 @@ utils::globalVariables(
     "group_mean",
     "signed.log2.fold.change",
     ".id",
+    ".data",
     "SampleType",
     "RFU_values",
     "value"
