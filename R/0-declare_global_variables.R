@@ -23,9 +23,10 @@ utils::globalVariables(
     "SubjectId",
     "SubjectCount",
     "Sex",
-    "group_mean",
+    "group_stat",
     "signed.log2.fold.change",
     ".id",
+    ".data",
     "SampleType",
     "RFU_values",
     "value"
