@@ -22,18 +22,18 @@ plotLongitudinal(
 \item{data}{A data frame containing RFU values to plot, typically
 a \code{soma_adat} class object.}
 
-\item{y}{An un-quoted variable name in \code{data} for the column containing
-the the y-axis (i.e. typically the "Response" variable).}
+\item{y}{A quoted or unquoted variable name in \code{data} for the column
+containing the y-axis (i.e. typically the "Response" variable).}
 
-\item{time}{An un-quoted variable name in \code{data} for the column containing
-x-axis (i.e. typically the "time" variable).}
+\item{time}{A quoted or unquoted variable name in \code{data} for the column
+containing the x-axis (i.e. typically the "time" variable).}
 
-\item{id}{An un-quoted variable name in \code{data} for the column containing
-the subject IDs (i.e. how the samples should be connected).}
+\item{id}{A quoted or unquoted variable name in \code{data} for the column
+containing the subject IDs (i.e. how the samples should be connected).}
 
-\item{color}{An un-quoted variable name in \code{data} for the column
-indicating how to color/group the lines. Default is by \code{Sex}.
-If \emph{no grouping} is desired, simply create a dummy variable and pass that
+\item{color}{A quoted or unquoted variable name in \code{data} for the column
+indicating how to color/group the lines. Default is by \code{Sex}. If
+\emph{no grouping} is desired, simply create a dummy variable and pass that
 column. See example below.}
 
 \item{summary.line}{A function describing how to summarize the lines.
@@ -83,53 +83,53 @@ df <- withr::with_seed(100, data.frame(
 df$TimePoint <- factor(df$TimePoint, levels = c("baseline", "6 months",
                                                 "12 months", "24 months"))
 
-
-new <- df |>
-  dplyr::mutate(
-    id = rep(1:10, times = 4),
-    time = dplyr::case_when(     # convert TimePoint -> numeric; distances for plotting
-      TimePoint == "baseline" ~ 0,
-      TimePoint == "6 months" ~ 6,
-      TimePoint == "12 months" ~ 12,
-      TimePoint == "24 months" ~ 24),
-    Sample = dplyr::case_when(  # recode Sample to correlate with IDs
-      id <= 4 ~ "small",
-      id > 7  ~ "large",
-      TRUE    ~ "medium")
-  )
+new <- df |>  # Map 'TimePoint' var (character) to a numeric
+ dplyr::left_join(data.frame(TimePoint = c("baseline", "6 months", "12 months", "24 months"),
+                             time      = c(0,           6,          12,          24)
+                             ),
+                  by = "TimePoint") |>
+ dplyr::mutate(id     = rep(1:10, times = 4),
+               Sample = dplyr::case_when(id <= 4 ~ "small", # Recode Sample to correlate with IDs
+                                         id > 7  ~ "large",
+                                         TRUE    ~ "medium"))
 
 # No title; no x-axis label; nothing fancy
-plotLongitudinal(new, y = seq.1234.56, time = TimePoint, id = id, color = Sample)
+plotLongitudinal(new, y = "seq.1234.56", time = "TimePoint", id = "id", color = "Sample")
 
-# Use 'time' variable for proper spacing along x-axis
-plotLongitudinal(new, y = seq.1234.56, id = id, time = time, color = Sample)
+# Color lines by the 'Sample' variable, using the 'time' numeric x variable
+plotLongitudinal(new, y = "seq.1234.56", time = "time", id = "id",
+                 color = "Sample")
 
-# Use `mean` as the summary lines; compared to `median` default
-plotLongitudinal(new, y = seq.1234.56, id = id, time = time, color = Sample,
-                 summary.line = mean)
+# Use unquoted variable names
+plotLongitudinal(new, y = seq.1234.56, time = time, id = id,
+                 color = Sample)
+
+# Use `mean` as the summary lines
+plotLongitudinal(new, y = "seq.1234.56", id = "id", time = "time",
+                 color = "Sample", summary.line = mean)
 
 # Suppress summary line with `NULL`
-plotLongitudinal(new, y = seq.1234.56, id = id, time = time, color = Pop,
+plotLongitudinal(new, y = "seq.1234.56", id = "id", time = "time", color = "Sample",
                  summary.line = NULL, main = "No Summary Lines")
 
-# Boxplots by time point; `time` must be a factor (TimePoint)
-plotLongitudinal(new, seq.1234.56, id = id, time = TimePoint,
-                 color = Sample, add.box = TRUE, summary.line = NULL,
+# Boxplots by time point; `time` variable (TimePoint) must be a factor
+plotLongitudinal(new, "seq.1234.56", id = "id", time = "TimePoint",
+                 color = "Sample", add.box = TRUE, summary.line = NULL,
                  main = "With Time Point Boxplots")
 
 # Suppress group-wise colors
 # by setting up `dummy` column
 new$dummy <- "A"     # call it anything
-plotLongitudinal(new, seq.1234.56, id = id, time = TimePoint,
-                 color = dummy, add.box = TRUE, summary.line = NULL,
+plotLongitudinal(new, "seq.1234.56", id = "id", time = "TimePoint",
+                 color = "dummy", add.box = TRUE, summary.line = NULL,
                  main = "Boxplots | Suppress Group Color") +
   ggplot2::theme(legend.pos = "none")
 
-p <- plotLongitudinal(new, y = seq.1234.56, id = id, time = time,
-                      color = Sample, summary.line = mean)
-
 # Facet by `Sample`
-p + ggplot2::facet_wrap(rlang::sym("Sample")) +
+p <- plotLongitudinal(new, y = "seq.1234.56", id = "id", time = "time",
+                      color = "Sample", summary.line = mean)
+
+p + ggplot2::facet_wrap(~Sample) +
   ggplot2::ggtitle("Facet by `Sample`")
 
 }
