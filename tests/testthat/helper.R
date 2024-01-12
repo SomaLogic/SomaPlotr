@@ -17,10 +17,8 @@ expect_snapshot_plot <- function(code, name, ...) {
   # unexpectedly fails or skips, testthat will not auto-delete the
   # corresponding snapshot file
   announce_snapshot_file(name = name)
-  # Will skip if run outside of SLIDE (linux), this is necessary due to
-  # minor changes in plotting defaults across OSs that cause
-  # snapshot testing to fail
-  skip_on_os(c("mac", "windows"))   # do we still want to skip this?
+  # only run on MacOS
+  skip_on_os(c("linux", "windows"))
   path <- save_png(code, ...)
   expect_snapshot_file(path, name)
 }
