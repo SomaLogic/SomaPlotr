@@ -9,9 +9,9 @@ plotLongitudinal(
   y,
   time,
   id,
-  color = Sex,
-  summary.line = stats::median,
+  color.by = NULL,
   size = 2.5,
+  summary.line = stats::median,
   main = NULL,
   y.lab = bquote(italic(log)[10] ~ (RFU)),
   x.lab = NULL,
@@ -22,37 +22,37 @@ plotLongitudinal(
 \item{data}{A data frame containing RFU values to plot, typically
 a \code{soma_adat} class object.}
 
-\item{y}{An un-quoted variable name in \code{data} for the column containing
-the the y-axis (i.e. typically the "Response" variable).}
+\item{y}{A quoted or unquoted variable name in \code{data} for the column
+containing the y-axis (i.e. typically the "Response" variable).}
 
-\item{time}{An un-quoted variable name in \code{data} for the column containing
-x-axis (i.e. typically the "time" variable).}
+\item{time}{A quoted or unquoted variable name in \code{data} for the column
+containing the x-axis (i.e. typically the "time" variable).}
 
-\item{id}{An un-quoted variable name in \code{data} for the column containing
-the subject IDs (i.e. how the samples should be connected).}
+\item{id}{A quoted or unquoted variable name in \code{data} for the column
+containing the subject IDs (i.e. how the samples should be connected).}
 
-\item{color}{An un-quoted variable name in \code{data} for the column
-indicating how to color/group the lines. Default is by \code{Sex}.
-If \emph{no grouping} is desired, simply create a dummy variable and pass that
-column. See example below.}
-
-\item{summary.line}{A function describing how to summarize the lines.
-Typically \code{\link[=mean]{mean()}} or \code{\link[=median]{median()}}. Set to \code{NULL} to suppress summary lines.}
+\item{color.by}{A quoted or unquoted variable name in \code{data} for the column
+indicating how to color/group the lines.}
 
 \item{size}{Numeric. The size for the points on the subject lines.}
+
+\item{summary.line}{A function describing how to summarize the lines.
+Typically \code{\link[base:mean]{base::mean()}} or \code{\link[stats:median]{stats::median()}}, but can be any function
+that takes a numeric vector and returns a scalar.
+To suppress, set to \code{NULL}.}
 
 \item{main}{Character. Main title for the plot.
 See \code{\link[=ggtitle]{ggtitle()}} for \code{ggplot2} style graphics.}
 
 \item{y.lab}{Character. Optional string to set the y-axis label.
-Defaults to \code{log10(RFU)} if a \code{SeqId} name is detected.}
+Defaults to \code{log10(RFU)} if a \code{SeqId} name is detected for \code{y}.}
 
 \item{x.lab}{Character. Optional string for the x-axis. Otherwise
 one is automatically generated (default).}
 
 \item{add.box}{Logical. Should boxplots be drawn for each time point?
-\strong{Note}: this groups the subjects together by time point and looks only at
-the differences across time points, thus \code{time} \emph{must} be a factor.}
+\strong{Note}: this groups the subjects together by time point,
+thus the \code{time} variable \emph{must} be a factor.}
 }
 \value{
 A longitudinal plot of samples by subject.
@@ -66,71 +66,74 @@ In order to generate a longitudinal plot by sample, 4 variables
 \itemize{
 \item \code{y}: Typically the field containing the y-axis.
 \item \code{time}: The field containing the time-series information, the x-axis.
-\item \code{id}: The field containing \code{subject} identifiers, i.e. how the points
-in each line should be connected.
-\item \code{color}: A field describing how groups should be split/colored. The
-only argument with a default value.
+\item \code{id}: The field containing \code{subject} identifiers,
+i.e. how the points in each line should be connected.
+\item \code{color.by} (optional): A field describing how groups
+should be split/colored. The only argument with a default value.
 }
 }
 \examples{
-df <- withr::with_seed(100, data.frame(
-  Pop       = rep_len(utils::head(LETTERS, 10), 40),
-  Sample    = sample(c("small", "medium", "large"), 40, replace = TRUE),
-  TimePoint = rep(c("baseline", "6 months", "12 months", "24 months"), each = 10),
-  seq.1234.56 = stats::rnorm(40, mean = 25, sd = 3.5)
-))
-
-df$TimePoint <- factor(df$TimePoint, levels = c("baseline", "6 months",
-                                                "12 months", "24 months"))
-
-
-new <- df |>
-  dplyr::mutate(
-    id = rep(1:10, times = 4),
-    time = dplyr::case_when(     # convert TimePoint -> numeric; distances for plotting
-      TimePoint == "baseline" ~ 0,
-      TimePoint == "6 months" ~ 6,
-      TimePoint == "12 months" ~ 12,
-      TimePoint == "24 months" ~ 24),
-    Sample = dplyr::case_when(  # recode Sample to correlate with IDs
-      id <= 4 ~ "small",
-      id > 7  ~ "large",
-      TRUE    ~ "medium")
+fct_vec <- factor(c("baseline", "6 months", "12 months", "24 months"))
+levels(fct_vec) <- fct_vec
+df <- withr::with_seed(100,
+  data.frame(
+    sample_id   = rep(1:10L, times = 4L),
+    pop         = rep_len(utils::head(LETTERS, 10L), 40L),
+    time_point  = rep(fct_vec, each = 10L),
+    seq.1234.56 = stats::rnorm(40, mean = 25, sd = 3.5)
   )
+)
+
+# Map 'time_point' (chr) to 'time_dbl' (numeric)
+new <- df |>
+ dplyr::left_join(
+   data.frame(time_point = fct_vec, time_dbl = c(0, 6, 12, 24)),
+   by = "time_point"
+ ) |>
+ # code 'size' to correlate with IDs
+ dplyr::mutate(size = dplyr::case_when(sample_id <= 4 ~ "small",
+                                        sample_id > 7 ~ "large",
+                                                 TRUE ~ "medium"))
 
 # No title; no x-axis label; nothing fancy
-plotLongitudinal(new, y = seq.1234.56, time = TimePoint, id = id, color = Sample)
+plotLongitudinal(new, y = "seq.1234.56", time = "time_point", id = "sample_id")
 
-# Use 'time' variable for proper spacing along x-axis
-plotLongitudinal(new, y = seq.1234.56, id = id, time = time, color = Sample)
+# Color lines by the 'size' variable
+plotLongitudinal(new, y = "seq.1234.56", time = "time_point", id = "sample_id",
+                 color.by = "size")
 
-# Use `mean` as the summary lines; compared to `median` default
-plotLongitudinal(new, y = seq.1234.56, id = id, time = time, color = Sample,
-                 summary.line = mean)
+# Color lines by the 'size' variable, using the 'time_dbl' x-variable
+plotLongitudinal(new, y = "seq.1234.56", time = "time_dbl", id = "sample_id",
+                 color.by = "size")
 
-# Suppress summary line with `NULL`
-plotLongitudinal(new, y = seq.1234.56, id = id, time = time, color = Pop,
-                 summary.line = NULL, main = "No Summary Lines")
+# Can use unquoted variable names
+plotLongitudinal(new, y = seq.1234.56, time = time_dbl, id = sample_id,
+                 color.by = size)
 
-# Boxplots by time point; `time` must be a factor (TimePoint)
-plotLongitudinal(new, seq.1234.56, id = id, time = TimePoint,
-                 color = Sample, add.box = TRUE, summary.line = NULL,
+# Summary lines
+plotLongitudinal(new, y = seq.1234.56, id = sample_id, time = time_dbl,
+                 color.by = size, summary.line = base::mean,
+                 main = "Use `mean()` Summary")
+
+plotLongitudinal(new, y = seq.1234.56, id = sample_id, time = time_dbl,
+                 color.by = size, summary.line = NULL,
+                 main = "Suppress Summary Lines")
+
+plotLongitudinal(new, y = seq.1234.56, id = sample_id, time = time_dbl,
+                 color.by = size, summary.line = function(x) 15,
+                 main = "Fixed Summary (y = 15)")
+
+# Add boxplots by time point
+plotLongitudinal(new, seq.1234.56, id = sample_id, time = time_point,
+                 color.by = size, add.box = TRUE, summary.line = NULL,
                  main = "With Time Point Boxplots")
 
-# Suppress group-wise colors
-# by setting up `dummy` column
-new$dummy <- "A"     # call it anything
-plotLongitudinal(new, seq.1234.56, id = id, time = TimePoint,
-                 color = dummy, add.box = TRUE, summary.line = NULL,
-                 main = "Boxplots | Suppress Group Color") +
-  ggplot2::theme(legend.pos = "none")
+# Facet by `size`
+p <- plotLongitudinal(new, y = seq.1234.56, id = sample_id, time = time_dbl,
+                      color.by = size, summary.line = base::mean)
 
-p <- plotLongitudinal(new, y = seq.1234.56, id = id, time = time,
-                      color = Sample, summary.line = mean)
-
-# Facet by `Sample`
-p + ggplot2::facet_wrap(rlang::sym("Sample")) +
-  ggplot2::ggtitle("Facet by `Sample`")
+p + ggplot2::facet_wrap(~size) +
+  ggplot2::ggtitle("Facet by `size`")
 
 }
 \seealso{
