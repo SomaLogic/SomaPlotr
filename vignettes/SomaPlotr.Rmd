@@ -344,7 +344,8 @@ df_long <- withr::with_seed(123, {
     SampleId    = rep(samples, each = 3L),
     TimePoint   = rep(c("0 baseline", "12 mo", "24 mo"), 6L), # Add timepoint measurements
     TissueType  = rep(c("Whole blood", "Plasma", "White blood cells"), each = 3L), # Specify tissue collection
-    seq.10021.1 = sample(df_sex$seq.10021.1, 18L)) # Sample RFU measurements for analyte of interest
+    seq.10021.1 = sample(df_sex$seq.10021.1, 18L) # Sample RFU measurements for analyte of interest
+  )
 })
 head(df_long, 10L)
 ```
@@ -353,11 +354,11 @@ The longitudinal plot can now be generated:
 
 ```{r long-plot, fig.width = 8, fig.height = 4}
 plotLongitudinal(
-  data  =  df_long,
-  y     = "seq.10021.1",
-  time  = "TimePoint",
-  id    = "SampleId",
-  color = "TissueType",
+  data     =  df_long,
+  y        = "seq.10021.1",
+  time     = "TimePoint",
+  id       = "SampleId",
+  color.by = "TissueType",
   summary.line = NULL   # suppress summary lines
 )
 ```
