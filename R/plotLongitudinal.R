@@ -143,7 +143,7 @@ plotLongitudinal <- function(data, y, time, id, color.by = NULL, size = 2.5,
     geom_point(aes(y = value, x = time, color = color.by),
                alpha = 0.5, size = size) +
     labs(x = x.lab, title = main, y = y.lab) +
-    scale_color_soma() +
+    scale_color_soma(name = toString(var_quos$color.by)) +
     theme_soma() +
     NULL
 
