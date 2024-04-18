@@ -126,8 +126,13 @@ plotLongitudinal <- function(data, y, time, id, color.by = NULL, size = 2.5,
     y.lab <- var_str[["y"]]
   }
 
+  # carry forward variables not used in plotting
+  # to enable downstream use via ggplot
+  clin_vars <- setdiff(getMeta(data), c(var_str, "tmp_color"))
+
   pdata <- data |>
-    dplyr::select(!!! var_quos) |> # select & rename variables
+    dplyr::select(!!! var_quos) |> # select & rename essential vars
+    dplyr::bind_cols(data[, clin_vars]) |> # add back clin vars w orig names
     pivot_longer(cols = y, names_to = "var", values_to = "value") |>
     arrange(id, time)
 
