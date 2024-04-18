@@ -13,7 +13,7 @@ plotLongitudinal(
   size = 2.5,
   summary.line = stats::median,
   main = NULL,
-  y.lab = bquote(italic(log)[10] ~ (RFU)),
+  y.lab = NULL,
   x.lab = NULL,
   add.box = FALSE
 )
@@ -129,11 +129,10 @@ plotLongitudinal(new, seq.1234.56, id = sample_id, time = time_point,
                  main = "With Time Point Boxplots")
 
 # Facet by `size`
-p <- plotLongitudinal(new, y = seq.1234.56, id = sample_id, time = time_dbl,
-                      color.by = size, summary.line = base::mean)
-
-p + ggplot2::facet_wrap(~size) +
-  ggplot2::ggtitle("Facet by `size`")
+plotLongitudinal(new, y = seq.1234.56, id = sample_id, time = time_dbl,
+                 color.by = size, summary.line = base::mean,
+                 main = "Split by 'size'") +
+  ggplot2::facet_wrap(~ size)
 
 }
 \seealso{

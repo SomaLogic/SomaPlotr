@@ -95,14 +95,14 @@
 #'                  main = "With Time Point Boxplots")
 #'
 #' # Facet by `size`
-#' p <- plotLongitudinal(new, y = seq.1234.56, id = sample_id, time = time_dbl,
-#'                       color.by = size, summary.line = base::mean)
+#' plotLongitudinal(new, y = seq.1234.56, id = sample_id, time = time_dbl,
+#'                  color.by = size, summary.line = base::mean,
+#'                  main = "Split by 'size'") +
+#'   ggplot2::facet_wrap(~ size)
 #'
-#' p + ggplot2::facet_wrap(~size) +
-#'   ggplot2::ggtitle("Facet by `size`")
-#'
-#' @importFrom dplyr select arrange group_by summarise
-#' @importFrom ggplot2 ggplot labs aes geom_boxplot geom_line geom_point
+#' @importFrom dplyr select arrange
+#' @importFrom ggplot2 ggplot labs aes geom_boxplot geom_line
+#' @importFrom ggplot2 geom_line geom_point stat_summary
 #' @importFrom rlang !!!
 #' @importFrom tidyr pivot_longer
 #' @export
@@ -147,19 +147,12 @@ plotLongitudinal <- function(data, y, time, id, color.by = NULL, size = 2.5,
     theme_soma() +
     NULL
 
-  # Group data summary
+  # longitudinal data summary
   if ( !is.null(summary.line) ) {
-    group_data <- data |>
-      dplyr::select(!!! var_quos) |>
-      group_by(color.by, time) |>
-      summarise(group_stat = summary.line(y))
-    p <- p +
-      geom_line(data       = group_data,
-                aes(x      = time,
-                    y      = group_stat,
-                    group  = color.by,
-                    colour = color.by),
-                linewidth = 1, linetype = "dashed")
+    p <- p + stat_summary(fun = summary.line, geom = "line",
+                          aes(y = value, x = as.numeric(time), color = color.by),
+                          linewidth = 0.75, linetype = "52", show.legend = FALSE,
+                          lineend = "round")
   }
 
   if ( add.box ) {
