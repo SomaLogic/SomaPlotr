@@ -28,9 +28,7 @@ palette_soma <- function(n, random_order = FALSE) {
 #'   [ggplot2::scale_fill_gradient()], or [ggplot2::scale_color_gradient()].
 #' @export
 scale_color_soma <- function(...) {
-  ggplot2::discrete_scale(aesthetics = "color",
-                          scale_name = "soma",
-                          palette    = palette_soma, ...)
+  ggplot2::discrete_scale(aesthetics = "color", palette = palette_soma, ...)
 }
 
 
@@ -38,9 +36,7 @@ scale_color_soma <- function(...) {
 #'   fill _discrete_ scale for SomaLogic graphics.
 #' @export
 scale_fill_soma <- function(...) {
-  ggplot2::discrete_scale(aesthetics = "fill",
-                          scale_name = "soma",
-                          palette    = palette_soma, ...)
+  ggplot2::discrete_scale(aesthetics = "fill", palette = palette_soma, ...)
 }
 
 
@@ -48,7 +44,7 @@ scale_fill_soma <- function(...) {
 #'   color _continuous_ scale for SomaLogic graphics.
 #' @inheritParams ggplot2::scale_color_gradient
 #' @export
-scale_continuous_color_soma <- function(low = soma_colors2$pink,
+scale_continuous_color_soma <- function(low  = soma_colors2$pink,
                                         high = soma_colors2$blue, ...) {
   ggplot2::scale_color_gradient(low = low, high = high, ...)
 }
@@ -58,7 +54,7 @@ scale_continuous_color_soma <- function(low = soma_colors2$pink,
 #'   fill _continuous_ scale for SomaLogic graphics.
 #' @inheritParams ggplot2::scale_fill_gradient
 #' @export
-scale_continuous_fill_soma <- function(low = soma_colors2$pink,
+scale_continuous_fill_soma <- function(low  = soma_colors2$pink,
                                        high = soma_colors2$blue, ...) {
   ggplot2::scale_fill_gradient(low = low, high = high, ...)
 }

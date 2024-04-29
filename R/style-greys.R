@@ -21,7 +21,6 @@ palette_soma_greys <- function(n) {
 #' @export
 scale_color_soma_greys <- function(...) {
   ggplot2::discrete_scale(aesthetics = "color",
-                          scale_name = "soma_greys",
                           palette    = palette_soma_greys, ...)
 }
 
@@ -31,6 +30,5 @@ scale_color_soma_greys <- function(...) {
 #' @export
 scale_fill_soma_greys <- function(...) {
   ggplot2::discrete_scale(aesthetics = "fill",
-                          scale_name = "soma_greys",
                           palette    = palette_soma_greys, ...)
 }

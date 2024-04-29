@@ -28,7 +28,6 @@ palette_soma_gender <- function(n = 8) {
 #' @export
 scale_color_soma_gender <- function(...) {
   ggplot2::discrete_scale(aesthetics = "color",
-                          scale_name = "soma_gender",
                           palette    = palette_soma_gender, ...)
 }
 
