@@ -53,8 +53,7 @@ scale_color_soma_risk <- function(direction = 4, ...) {
   palette_soma_risk_ <- function(n) {
     palette_soma_risk(direction = direction, n = n)
   }
-  discrete_scale(aesthetics = "color", scale_name = "soma_risk",
-                 palette = palette_soma_risk_, ...)
+  discrete_scale(aesthetics = "color", palette = palette_soma_risk_, ...)
 }
 
 
@@ -66,8 +65,7 @@ scale_fill_soma_risk <- function(direction = 4, ...) {
   palette_soma_risk_ <- function(n) {
     palette_soma_risk(direction = direction, n = n)
   }
-  discrete_scale(aesthetics = "fill", scale_name = "soma_risk",
-                 palette = palette_soma_risk_, ...)
+  discrete_scale(aesthetics = "fill", palette = palette_soma_risk_, ...)
 }
 
 
