@@ -4,6 +4,9 @@
     <loc>https://somalogic.github.io/SomaPlotr/404.html</loc>
   </url>
   <url>
+    <loc>https://somalogic.github.io/SomaPlotr/CONTRIBUTING.html</loc>
+  </url>
+  <url>
     <loc>https://somalogic.github.io/SomaPlotr/LICENSE-text.html</loc>
   </url>
   <url>
@@ -32,9 +35,6 @@
   </url>
   <url>
     <loc>https://somalogic.github.io/SomaPlotr/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://somalogic.github.io/SomaPlotr/pull_request_template.html</loc>
   </url>
   <url>
     <loc>https://somalogic.github.io/SomaPlotr/reference/SomaPlotr-package.html</loc>
