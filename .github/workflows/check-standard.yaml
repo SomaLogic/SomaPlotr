@@ -36,9 +36,8 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: macos-latest, r: 'release'}
-          - {os: windows-latest, r: 'release'}
-          #- {os: ubuntu-latest, r: 'release'}  # was taking too long to build
+          - {os: macos-12, r: '4.3.2'}
+          - {os: windows-latest, r: '4.3.2'}
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -47,7 +46,7 @@ jobs:
       TZ: 'America/Denver'
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: r-lib/actions/setup-pandoc@v2
 
