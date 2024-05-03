@@ -36,7 +36,7 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: macos-12, r: '4.3.2'}
+          - {os: macos-14, r: '4.3.2'}
           - {os: windows-latest, r: '4.3.2'}
 
     env:
