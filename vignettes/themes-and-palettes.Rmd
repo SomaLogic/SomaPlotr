@@ -56,7 +56,7 @@ both color and greyscale graphics.
 
 `soma_colors` is a list of hex values corresponding to `r length(soma_colors)` 
 colors from the SomaLogic Operating Co. branding color scheme (prior to 2020), in darker 
-and more subdued shades than what is used today (in 2023).
+and more subdued shades than what is used today.
 
 ```{r soma-colors}
 # Display the hex color codes in the list
