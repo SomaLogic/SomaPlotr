@@ -6,7 +6,7 @@
 <!-- badges: start -->
 
 ![GitHub
-version](https://img.shields.io/badge/Version-0.0.0.9000-success.svg?style=flat&logo=github)
+version](https://img.shields.io/badge/Version-0.0.1-success.svg?style=flat&logo=github)
 [![CRAN
 status](http://www.r-pkg.org/badges/version/SomaPlotr)](https://cran.r-project.org/package=SomaPlotr)
 [![](https://cranlogs.r-pkg.org/badges/grand-total/SomaPlotr)](https://cran.r-project.org/package=SomaPlotr)
