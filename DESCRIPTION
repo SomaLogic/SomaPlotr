@@ -1,7 +1,7 @@
 Type: Package
 Package: SomaPlotr
 Title: Bioinformatics Graphics and Visualization of 'SomaScan' Data
-Version: 0.0.0.9000
+Version: 0.0.1
 Authors@R: c(
     person(given = "Amanda",
            family = "Hiser",
