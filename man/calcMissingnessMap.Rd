@@ -63,7 +63,6 @@ mm
 \seealso{
 Other Calc Map: 
 \code{\link{calcFoldchangeMatrix}()},
-\code{\link{calcOutlierMap}()},
 \code{\link{getFlaggedIds}()},
 \code{\link{plot.Map}()}
 }

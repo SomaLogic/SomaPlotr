@@ -30,7 +30,6 @@
 \item{x}{An object of class:
 \itemize{
 \item \code{foldchange_matrix}
-\item \code{outlier_map}
 \item \code{missingness_map}
 }}
 
@@ -70,15 +69,11 @@ one is automatically generated (default).}
 \item{x.lab}{Character. Optional string for the x-axis. Otherwise
 one is automatically generated (default).}
 
-\item{type}{Character. Currently one of: \code{"foldchange"},
-\code{"outlier"}, or \code{"missingness"}. This argument is determined by object
-class and typically should not have to be passed by the user if called
-via the intended S3 \code{plot} method.}
+\item{type}{Character. Currently one of: \code{"foldchange"} or \code{"missingness"}.
+This argument is determined by object class and typically should not have
+to be passed by the user if called via the intended S3 \code{plot} method.}
 
 \item{flags}{Numeric in \verb{[0, 1]}.
-For an \code{"outlier_map"}, the proportion of the analytes (columns)
-for a given sample that must be outliers for a flag to be placed at the right-axis,
-thus flagging that sample.
 For \code{"missingness_map"} class, the percent of "missingness" (\code{NAs}) of the
 clinical meta data. If \code{NULL} (default), \code{0.05} (5\%) is selected.}
 
@@ -105,10 +100,9 @@ Plot an image of the passed matrix.
 }
 \description{
 Plotting function for objects of the \code{foldchange_matrix},
-\code{outlier_map}, or \code{missingness_map} classes. Produces a
+or \code{missingness_map} classes. Produces a
 heatmap-style image using \pkg{ggplot2} syntax, for objects
-produced by one of \code{\link[=calcFoldchangeMatrix]{calcFoldchangeMatrix()}},
-\code{\link[=calcOutlierMap]{calcOutlierMap()}}, or \code{\link[=calcMissingnessMap]{calcMissingnessMap()}}.
+produced by one of \code{\link[=calcFoldchangeMatrix]{calcFoldchangeMatrix()}} or \code{\link[=calcMissingnessMap]{calcMissingnessMap()}}.
 }
 \examples{
 data <- SomaDataIO::example_data
@@ -116,10 +110,6 @@ data <- SomaDataIO::example_data
 # Fold-change
 FC <- calcFoldchangeMatrix(data)
 plot(FC)
-
-# Outlier
-OM <- calcOutlierMap(data)
-plot(OM, flags = 0.05)
 
 # Clin Data Missingness
 meta <- SomaDataIO::getMeta(data)
@@ -132,7 +122,6 @@ plot(MM, flags = 0.05)
 Other Calc Map: 
 \code{\link{calcFoldchangeMatrix}()},
 \code{\link{calcMissingnessMap}()},
-\code{\link{calcOutlierMap}()},
 \code{\link{getFlaggedIds}()}
 }
 \author{

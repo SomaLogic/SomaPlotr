@@ -1,16 +1,12 @@
 #' Get Flagged Ids From MAD Outlier or Missingness Maps
 #'
-#' Return the IDs of flagged samples for objects of the `outlier_map` or
-#' `missingness_map` classes. Samples are flagged based on the percent
-#' analytes (RFU columns) for a given sample that were identified as outliers using
-#' the median absolute deviation (MAD), or the percent of "missingness" (`NAs`) of
-#' clinical meta data of an ADAT.
+#' Return the IDs of flagged samples for objects of the
+#' `missingness_map` class. Samples are flagged based on the percent of
+#' "missingness" (`NAs`) of clinical meta data of an ADAT.
 #'
 #' @family Calc Map
 #' @inheritParams plot.Map
-#' @param x An object of class:
-#'   * `outlier_map` - from [calcOutlierMap()]
-#'   * `missingness_map` - from [calcMissingnessMap()]
+#' @param x An object of class: `missingness_map` - from [calcMissingnessMap()]
 #' @param data Optional. The data originally used to create the map `x`. If
 #'   omitted, a single column data frame is returned.
 #' @param include Optional. Character vector of column name(s) in `data` to
@@ -19,15 +15,6 @@
 #'   with any additional variables as specified by `include`.
 #' @author Caleb Scheidel
 #' @examples
-#' # flagged outliers
-#' # create a single sample outlier (12)
-#' out_adat <- SomaDataIO::example_data
-#' apts     <- SomaDataIO::getAnalytes(out_adat)
-#' out_adat[12, apts] <- out_adat[12, apts] * 10
-#'
-#' om <- calcOutlierMap(out_adat)
-#' getFlaggedIds(om, out_adat, flags = 0.05, include = c("Sex", "Subarray"))
-#'
 #' # flagged missingness
 #' sample.adat <- SomaDataIO::example_data
 #' nc   <- SomaDataIO::getMeta(sample.adat, n = TRUE)
@@ -44,8 +31,8 @@
 #' @export
 getFlaggedIds <- function(x, flags = 0.05, data = NULL, include = NULL) {
 
-  if ( !inherits(x, c("outlier_map", "missingness_map")) ) {
-    stop("Input `x` object must be class `outlier_map` or `missingness_map`!",
+  if ( !inherits(x, c("missingness_map")) ) {
+    stop("Input `x` object must be class `missingness_map`!",
          call. = FALSE)
   }
 
