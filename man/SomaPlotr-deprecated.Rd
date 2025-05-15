@@ -13,7 +13,7 @@ suggestions below:
 
 \tabular{lcr}{
 \strong{Function}       \tab                                    \tab \strong{Now Use} \cr
-\code{\link[=calcOutlierMap]{calcOutlierMap()}}    \tab \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \tab \code{\link[SomaDataIO:calcOutlierMap]{SomaDataIO::calcOutlierMap()}} \cr
+\code{\link[=calcOutlierMap]{calcOutlierMap()}}    \tab \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \tab \code{SomaDataIO::calcOutlierMap()} \cr
 }
 }
 \details{
