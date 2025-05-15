@@ -1,17 +1,15 @@
 #' Plot Image Maps
 #'
 #' Plotting function for objects of the `foldchange_matrix`,
-#' `outlier_map`, or `missingness_map` classes. Produces a
+#' or `missingness_map` classes. Produces a
 #' heatmap-style image using \pkg{ggplot2} syntax, for objects
-#' produced by one of [calcFoldchangeMatrix()],
-#' [calcOutlierMap()], or [calcMissingnessMap()].
+#' produced by one of [calcFoldchangeMatrix()] or [calcMissingnessMap()].
 #'
 #' @family Calc Map
 #' @inheritParams boxplotBeeswarm
 #' @param x An object of class:
 #'   \itemize{
 #'     \item `foldchange_matrix`
-#'     \item `outlier_map`
 #'     \item `missingness_map`
 #'   }
 #' @param color.scheme Which color scheme to use. Typical choices include:
@@ -34,9 +32,6 @@
 #' @param gridlinelwd Width of the gridlines.
 #' @param gridlinelty Line type of the gridlines.
 #' @param flags Numeric in \verb{[0, 1]}.
-#'   For an `"outlier_map"`, the proportion of the analytes (columns)
-#'   for a given sample that must be outliers for a flag to be placed at the right-axis,
-#'   thus flagging that sample.
 #'   For `"missingness_map"` class, the percent of "missingness" (`NAs`) of the
 #'   clinical meta data. If `NULL` (default), `0.05` (5%) is selected.
 #' @param legend.width Width for the color legend.
@@ -49,10 +44,9 @@
 #' @param plot.width If `"filename != NULL"`, the width of the plot image file.
 #' @param plot.height If `"filename != NULL"`, the height of the plot image file.
 #' @param plot.scale If `"filename != NULL"`, the scale of the plot image file.
-#' @param type Character. Currently one of: `"foldchange"`,
-#'   `"outlier"`, or `"missingness"`. This argument is determined by object
-#'   class and typically should not have to be passed by the user if called
-#'   via the intended S3 `plot` method.
+#' @param type Character. Currently one of: `"foldchange"` or `"missingness"`.
+#'   This argument is determined by object class and typically should not have
+#'   to be passed by the user if called via the intended S3 `plot` method.
 #' @param ... Arguments required by the `plot()` generic. Currently unused.
 #' @return Plot an image of the passed matrix.
 #' @author Stu Field, Amanda Hiser
@@ -63,10 +57,6 @@
 #' # Fold-change
 #' FC <- calcFoldchangeMatrix(data)
 #' plot(FC)
-#'
-#' # Outlier
-#' OM <- calcOutlierMap(data)
-#' plot(OM, flags = 0.05)
 #'
 #' # Clin Data Missingness
 #' meta <- SomaDataIO::getMeta(data)
@@ -135,10 +125,7 @@ plot.Map <- function(x, color.scheme = NULL,
   }
 
   # define plot title & axis labels for starred samples
-  if ( type == "outlier" ) {
-    title <- paste0(plot.info$title, "     ",
-                    sprintf("(* \u2265 %s%%)", format(flags * 100, digits = 3)))
-  } else if ( type %in% c("missingness", "foldchange") ) {
+  if ( type %in% c("missingness", "foldchange") ) {
     title <- plot.info$title
   } else {
     stop(

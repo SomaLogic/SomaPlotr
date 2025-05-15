@@ -94,7 +94,6 @@ fc$sample.order
 \seealso{
 Other Calc Map: 
 \code{\link{calcMissingnessMap}()},
-\code{\link{calcOutlierMap}()},
 \code{\link{getFlaggedIds}()},
 \code{\link{plot.Map}()}
 }

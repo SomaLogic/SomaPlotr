@@ -36,6 +36,7 @@ Imports:
     SomaDataIO,
     dplyr,
     ggplot2,
+    lifecycle (>= 1.0.0),
     rlang,
     tidyr
 Suggests:
