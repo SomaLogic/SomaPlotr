@@ -9,7 +9,7 @@
 #'
 #' \tabular{lcr}{
 #'   **Function**       \tab                                    \tab **Now Use** \cr
-#'   [calcOutlierMap()]    \tab `r lifecycle::badge("deprecated")` \tab [SomaDataIO::calcOutlierMap()] \cr
+#'   [calcOutlierMap()]    \tab `r lifecycle::badge("deprecated")` \tab `SomaDataIO::calcOutlierMap()` \cr
 #' }
 #'
 #' @details
