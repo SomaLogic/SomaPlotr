@@ -21,18 +21,11 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Amanda Hiser \email{ahiser@somalogic.com}
-
-Authors:
-\itemize{
-  \item Stu Field \email{stu.g.field@gmail.com} (\href{https://orcid.org/0000-0002-1024-5859}{ORCID}) [contributor]
-}
+\strong{Maintainer}: Amanda Hiser \email{amanda.hiser@standardbio.com}
 
 Other contributors:
 \itemize{
-  \item Caleb Scheidel \email{cscheidel@somalogic.com} [contributor]
-  \item Leigh Alexander \email{lalexander@somalogic.com} [contributor]
-  \item SomaLogic Operating Co., Inc. [copyright holder, funder]
+  \item Standard BioTools, Inc. [copyright holder, funder]
 }
 
 }

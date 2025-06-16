@@ -1,6 +1,6 @@
 ---
 title: "Introduction to SomaPlotr"
-author: "Amanda Hiser, SomaLogic Operating Co., Inc."
+author: "Amanda Hiser"
 output:
   rmarkdown::html_vignette:
     fig_caption: yes
