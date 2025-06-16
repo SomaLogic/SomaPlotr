@@ -6,21 +6,9 @@ Authors@R: c(
     person(given = "Amanda",
            family = "Hiser",
            role = c("aut", "cre"),
-           email = "ahiser@somalogic.com"),
-    person(given = "Caleb",
-           family = "Scheidel",
-           role = "ctb",
-           email = "cscheidel@somalogic.com"),
-    person(given = "Leigh",
-           family = "Alexander",
-           role = "ctb",
-           email = "lalexander@somalogic.com"),
-    person(given = "Stu",
-           family = "Field",
-           role = c("aut", "ctb"),
-           email = "stu.g.field@gmail.com",
-           comment = c(ORCID = "0000-0002-1024-5859")),
-    person(given = "SomaLogic Operating Co., Inc.", role = c("cph", "fnd"))
+           email = "amanda.hiser@standardbio.com"),
+    person(given = "Standard BioTools, Inc.", 
+           role = c("cph", "fnd"))
     )
 Description: A highly specialized suite of standardized
     plotting routines based on the "Grammar of Graphics" framework of
@@ -53,6 +41,7 @@ Suggests:
     withr
 VignetteBuilder:
     knitr
+Copyright: Standard BioTools, Inc. 2025
 Encoding: UTF-8
 Language: en-US
 LazyData: true
@@ -60,4 +49,4 @@ LazyLoad: true
 Config/testthat/edition: 3
 Config/Needs/website: tidyverse/tidytemplate
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
