@@ -1,11 +1,10 @@
 pandoc: 3.1.11
-pkgdown: 2.0.9
+pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
   SomaPlotr: SomaPlotr.html
   themes-and-palettes: themes-and-palettes.html
-last_built: 2024-05-07T20:05Z
+last_built: 2025-06-16T22:05Z
 urls:
   reference: https://somalogic.github.io/SomaPlotr/reference
   article: https://somalogic.github.io/SomaPlotr/articles
-
