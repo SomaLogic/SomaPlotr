@@ -211,7 +211,7 @@ color scales and themes, see `?SomaPlotr::theme_soma`.
   - <https://choosealicense.com/licenses/mit/>
   - [https://www.tldrlegal.com/license/mit-license/](https://www.tldrlegal.com/license/mit-license)
 - Further:
-  - “SomaPlotr” and “SomaLogic” are trademarks owned by SomaLogic
-    Operating Co., Inc. No license is hereby granted to these trademarks
+  - “SomaPlotr” and “SomaLogic” are trademarks owned by Standard
+    BioTools, Inc. No license is hereby granted to these trademarks
     other than for purposes of identifying the origin or source of this
     Software.
